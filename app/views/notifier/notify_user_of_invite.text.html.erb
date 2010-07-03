@@ -1,0 +1,6 @@
+<p>
+<%= @group_user.group.users.owners.first.name %> has invited you to join the CRdata group called <%= @group_user.group.name %>. 
+</p>
+<p>
+You can accept or decline the invitation via this link: <%= link_to('here', account_url) %>
+</p>

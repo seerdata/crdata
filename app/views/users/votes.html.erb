@@ -1,0 +1,47 @@
+<% content_for(:head) do %>
+  <%= ajaxful_rating_style %>
+<% end -%>
+
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, "View #{@user.name} Votes") %>
+<% end %>
+
+<% content_for(:content) do %>
+  <% content_tag(:div) do %>
+    <%= content_tag(:h2, 'Datasets') %>
+    <% @data_sets.each do |data_set| %>
+      <hr size="0" />
+      <%= content_tag(:h3, "#{data_set.name} <span>ratings</span>") %>
+      <div class="left_rating">
+      <% DATASET_DIMENSIONS.each_pair do |dimension, title| %>
+        <%= title %>:
+        <%= ratings_for data_set, @user, :dimension => dimension, :show_user_rating => true, :force_static => true %><br />
+      <% end %>
+      </div>
+      <% if comment = data_set.comments.find_by_user_id(@user.id) %>
+        <%= render(:partial => 'comments/comment', :locals => {:comment => comment}) %>
+      <% end %>
+      <%= clear %><br />
+    <% end %>
+  <% end unless @data_sets.blank?%>
+  
+  <br /><br />
+  
+  <% content_tag(:div) do %>
+    <%= content_tag(:h2, 'Scripts') %>
+    <% @r_scripts.each do |r_script| %>
+      <hr size="0" />
+      <%= content_tag(:h3, "#{r_script.name} <span>ratings</span>") %>
+      <div class="left_rating">
+      <% R_SCRIPT_DIMENSIONS.each_pair do |dimension, title| %>
+        <%= title %>:
+        <%= ratings_for r_script, @user, :dimension => dimension, :show_user_rating => true, :force_static => true %><br />
+      <% end %>
+      </div>
+      <% if comment = r_script.comments.find_by_user_id(@user.id) %>
+        <%= render(:partial => 'comments/comment', :locals => {:comment => comment}) %>
+      <% end %>
+      <%= clear %><br />
+    <% end %>
+  <% end unless @r_scripts.blank?%>
+<% end %>

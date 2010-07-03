@@ -1,0 +1,97 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  id: 1
+  r_script_id: 1
+  jobs_queue_id: 
+  submitted_at: 2009-12-19 11:13:41
+  started_at: 2009-12-19 11:13:41
+  processing_node_id: 1
+  completed_at: 
+  successful: false
+  status: running 
+  description: description
+
+two:
+  id: 2
+  r_script_id: 1
+  jobs_queue_id: 1
+  submitted_at: 2009-12-19 11:13:41
+  started_at:
+  processing_node_id:
+  completed_at: 
+  successful: false
+  status: submitted
+  description: description
+
+three:
+  id: 8
+  r_script_id: 1
+  jobs_queue_id: 
+  submitted_at:
+  started_at:
+  processing_node_id:
+  completed_at: 
+  successful: false
+  status: new
+  description: description
+
+new:
+  id: 3
+  r_script_id: 1
+  jobs_queue_id: 
+  submitted_at:
+  started_at:
+  processing_node_id:
+  completed_at: 
+  successful: false
+  status: new
+  description: description
+
+submitted:
+  id: 4
+  r_script_id: 1
+  jobs_queue_id: 1
+  submitted_at: 2009-12-19 11:13:41
+  started_at:
+  processing_node_id:
+  completed_at: 
+  successful: false
+  status: submitted
+  description: description
+
+running:
+  id: 5
+  r_script_id: 1
+  jobs_queue_id:
+  submitted_at: 2009-12-19 11:13:41
+  started_at: 2009-12-19 11:13:41
+  processing_node_id: 1
+  completed_at: 
+  successful: false
+  status: running
+  description: description
+
+cancelled:
+  id: 6
+  r_script_id: 1
+  jobs_queue_id: 
+  submitted_at: 2009-12-19 11:13:41
+  started_at: 2009-12-19 11:13:41
+  processing_node_id: 1
+  completed_at: 2009-12-19 11:13:41
+  successful: false
+  status: cancelled
+  description: description
+
+done:
+  id: 7
+  r_script_id: 1
+  jobs_queue_id: 
+  submitted_at: 2009-12-19 11:13:41
+  started_at: 2009-12-19 11:13:41
+  processing_node_id: 1
+  completed_at: 2009-12-19 11:13:41
+  successful: true
+  status: done
+  description: description

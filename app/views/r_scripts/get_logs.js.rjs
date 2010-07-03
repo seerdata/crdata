@@ -1,0 +1,7 @@
+page.replace_html('some_id', :partial => 'logs', :locals => {:r_script => @r_script, :logs => @logs}) 
+page.replace_html(:section_title, :text =>  "New Job - Step 1 from #{@r_script.count_steps} (script selection)")
+if @r_script.has_data_set_parameters?
+  page << "$('next_step').href = 'select_data_set?r_script_id=#{@r_script.id}'"
+else
+  page << "$('next_step').href = 'set_information?r_script_id=#{@r_script.id}'"
+end

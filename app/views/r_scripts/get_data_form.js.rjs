@@ -1,0 +1,7 @@
+page.replace_html(:job_data, :partial => 'data_form', :locals => {:r_script => @r_script})
+if @r_script.description.include?('<p>')
+  page.replace_html(:help_link, :text => "<strong>#{link_to('Help with chosen script...', help_page_r_script_path(@r_script), {:target => :blank})}")
+else
+  page.replace_html(:help_link, :text => "<strong>#{link_to('Help with chosen script...', '#', {:onclick => 'show_help_link(event)'})}")
+page.replace_html(:r_script_description, :text => (@r_script.description.blank?) ? 'The author of this script has not provided any associated help text.' : simple_format(@r_script.description)) 
+end

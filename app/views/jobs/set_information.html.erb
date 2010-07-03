@@ -1,0 +1,39 @@
+<% content_for(:intro) do %>
+	<h1>Manage Jobs</h1>
+	<p class="solo">Use the interactive interface below to manage your analysis runs.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <%= content_tag(:h2, "New Job - Step #{RScript.find(session[:r_script_id]).count_steps} from #{RScript.find(session[:r_script_id]).count_steps} (job information)") %>
+
+  <% semantic_form_for(@job, :url => create_from_wizard_jobs_path) do |form| %>
+    <% content_tag(:ul, :class => 'form') do %>
+      <%= form.input(:description, :label => 'Name your job',  :input_html => { :class => 'text'}) %>
+      <%= clear(:li) %>
+      <%= form.input(:jobs_queue, :collection => (current_user) ? mark_paused_jobs_queues(current_user.jobs_queues) : mark_paused_jobs_queues(JobsQueue.public_jobs_queues), :label => 'Choose Jobs Queue', :input_html => { :class => 'text'}) %>
+      <%= clear(:li) %>
+      <%= content_tag(:h2, 'Parameters') unless @job.job_parameters.blank? %>
+      <%= clear(:li) %>
+      <% form.semantic_fields_for :job_parameters do |job_parameter| %>
+        <% job_parameter.object.value = job_parameter.object.parameter.default_value if job_parameter.object.value.blank? %>
+        <% if job_parameter.object.parameter.kind == 'Boolean' %>
+          <%= job_parameter.input(:value, :as => :select, :collection => {'true' => '1', 'false' => '0'}, :include_blank => false, :label => "#{job_parameter.object.parameter.title} (#{job_parameter.object.parameter.kind})",  :input_html => { :class => 'text'}) %>
+        <% elsif job_parameter.object.parameter.kind == 'Enumeration' %>
+          <%= job_parameter.input(:value, :as => :select, :collection => get_enum_options(job_parameter.object.parameter.min_value, job_parameter.object.parameter.max_value, job_parameter.object.parameter.increment_value, nil, false), :include_blank => false, :label => "#{job_parameter.object.parameter.title} (#{job_parameter.object.parameter.kind})",  :input_html => { :class => 'text'}) %>
+        <% elsif job_parameter.object.parameter.kind == 'List' %>
+          <%= job_parameter.input(:value, :as => :select, :collection => job_parameter.object.parameter.default_value.split(','), :include_blank => false, :label => "#{job_parameter.object.parameter.title} (#{job_parameter.object.parameter.kind})",  :input_html => { :class => 'text'}) %>
+        <% else %>
+        <%= job_parameter.input(:value, :label => "#{job_parameter.object.parameter.title} (#{job_parameter.object.parameter.kind})",  :input_html => { :class => 'text'}) %>
+        <% end %>
+        <%= job_parameter.input(:parameter_id, :as => :hidden) %>
+      <% end %>
+
+        
+      <%= clear(:li) %>
+    <% end -%>
+    <% form.buttons do %>
+      <%= form.commit_button %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', jobs_path) %></span>
+  <% end %>
+<% end %>

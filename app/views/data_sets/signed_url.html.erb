@@ -1,0 +1,39 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Datasets') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your data.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+	<h2>Generate signed URL</h2>
+  <% form_tag(generate_signed_url_data_set_path(@data_set)) do %>
+  <ul class="form">
+    <% content_tag(:li, :id => 'select_aws_key') do %>
+      <%= label_tag(:aws_key, 'AWS Key') %>
+      <%= select_tag(:aws_key, options_for_select(current_user.aws_keys.collect{|aws_key| [aws_key.name, aws_key.id.to_s]} << ['(other key)', 'other_key'], params[:aws_key])) %>
+    <% end %>
+    <% content_tag(:li, :id => 's3_credentials', :class => 'w600', :style => current_user.aws_keys.blank? ? '' : 'display: none') do %>
+      <div style="float:left; width:165px; margin-right:20px">
+        <%= label_tag('access_key_id', 'Access Key Id') %>
+        <%= text_field_tag('access_key_id') %>
+      </div>
+      <div style="float:left; width:165px; margin-right:20px">
+        <%= label_tag('secret_access_key', 'Secret Access Key') %>
+        <%= text_field_tag('secret_access_key') %>
+      </div>
+    <% end %>
+		<%= clear(:li) %>
+	</ul>
+	<fieldset class="buttons"><ol>
+		<li class="commit">
+			<%= submit_tag('Generate URL') %>
+		</li>
+	</fieldset>
+    <span class="form-cancel">or <%= link_to('Cancel', @data_set) %></span>
+  <% end %>
+  <br />
+  <% content_tag(:div) do %>
+    <h2>Signed URL</h2>
+    <%= content_tag(:p, link_to(@signed_url, @signed_url, :target => :blank)) %>
+  <% end if @signed_url %>
+  <%= javascript_include_tag('data/show') %>
+<% end %>

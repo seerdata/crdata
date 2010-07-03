@@ -1,0 +1,38 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Account') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your account settings.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <h2>
+    <span>Name:</span>
+    <%=h @user.name %>
+  </h2>
+  <p>
+    <strong>Email:</strong>
+    <%=h @user.email %>
+  </p>
+  
+  <h3>Settings for:</h3>
+  <span class="spark-adv-submit"><%= link_to('Account', edit_user_path(@user)) %></span>
+  <span class="spark-adv-submit"><%= link_to('Notifications', account_preferences_path) %></span>
+  <span class="spark-adv-submit"><%= link_to('AWS Keys', aws_keys_path) %></span>
+  <span class="spark-adv-submit"><%= link_to('Default availability zone', new_account_preference_path(:kind => 'availability_zone')) %></span>
+  <span class="spark-adv-submit"><%= link_to('Default queue', new_account_preference_path(:kind => 'default_queue')) %></span>
+  <%= clear %><br />
+  <%= clear %>
+
+    
+  <% content_tag(:div) do %><hr size="0" />  
+  <h3>Membership invites:</h3>
+  <% content_tag(:ol, :class => 'decimal_li') do %>
+    <% @user.groups.invited.each do |group| %> 
+      <% content_tag(:li) do %>
+        <%= group.name %>
+        <%= link_to('Accept invitation', accept_group_user_path(GroupUser.first(:conditions => ['user_id = ? AND group_id = ?', current_user.id, group.id])), :confirm => 'Are you sure you want to accept membership invitation?') %>
+        <%= link_to('Decline invitation', decline_group_user_path(GroupUser.first(:conditions => ['user_id = ? AND group_id = ?', current_user.id, group.id])), :confirm => 'Are you sure you want to decline membership invitation?') %>
+      <% end %>
+    <% end %>
+  <% end %><% end unless @user.groups.invited.blank? %>
+ 
+<% end %>

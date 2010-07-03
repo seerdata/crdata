@@ -1,0 +1,31 @@
+<% content_for(:intro) do %>
+	<%= render(:partial => 'intro', :use_full_path => true) %>
+<% end -%>
+
+<% content_for(:content) do %>
+	
+	<h2>Benefits of Guest Users</h2>
+	
+	<p>Guest Users are anonymous to CRdata. As a CRdata Guest User, you can:</p>
+	<ul class="bullet_list"><li>Upload your datasets into the shared Guest User disk space.</li>
+		<li>Run any of the publicly-available CRdata R scripts on any datasets in the Guest User space.</li></ul>
+	
+	<br /><hr />
+	<h3>Note that as a Guest User</h3>
+	<ul class="bullet_list"><li>Any data you upload will be visible to all CRdata users.</li>
+		<li>Your analysis results will be saved on a web-page that is accessible to all CRdata users.</li>
+		<li>Data and analysis results saved in the Guest User space may be deleted without notice. We strongly recommend that you save copies on your local machine.</li></ul>
+	
+	<br /><hr />
+	<h3>Take full advantage of CRdata</h3>
+	<p>To take full advantage of CRdata, we recommend you register with your email address. As a Registered User, you will be able to:</p>
+	<ul class="bullet_list"><li>Upload new R scripts to CRdata.</li>
+		<li>Keep your scripts and data private, or define Groups to share them with.</li>
+		<li>Buy disk-space and processor nodes from Amazon Web Services and use them to run CRdata privately (or shared within your groups).</li>
+		<li>Receive an email when your analysis run is complete.</li></ul>
+		
+	<p>To continue as a Guest user use the tabs on the left to upload your data and run analyses.</p>
+	
+	<% unless current_user %><br /><span class="spark-adv-submit"><%= link_to('Register Now', new_account_path) %></span><% end -%>
+	<%= clear %>
+<% end -%>

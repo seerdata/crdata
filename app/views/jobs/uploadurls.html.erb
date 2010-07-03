@@ -1,0 +1,15 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Jobs') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your analysis runs.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+ 
+<h1>List of URLs for Upload</h1>
+<ol>
+<% @url_list.each_pair do |name, url| %>
+  <li><%= "#{name} => #{url}" %></li> 
+<% end %>
+</ol>
+<%= link_to 'Back to job', job_path(@job) %> 
+<% end %>

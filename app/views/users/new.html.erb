@@ -1,0 +1,21 @@
+<% content_for(:intro) do %>
+	<h1>Register to</h1>
+	<p class="first bullet less_margin">use CRdata as a private resource</p>
+	<p class="first bullet less_margin">share your data and R scripts with selected others, or with the whole community</p>
+	<p class="first bullet">purchase your own storage space and processors on the Amazon cloud (&amp; share these with others, if you wish)</p>
+	<p class="solo">All data and scripts associated with Guest Users are accessible to all Guest Users and could be modified or deleted without notice.</p>
+
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>Become a member</h2>
+	<% semantic_form_for(@user) do |form| %>
+		<%= render(:partial => 'form', :use_full_path => true, :locals => {:form => form}) %>
+    <% form.buttons do %>
+      <%= form.commit_button %>
+    <% end %>
+    <%= clear %>
+  <br /><br />
+  <p><%= link_to("Already joined? <strong>Login!</strong>", new_user_session_path) %></p>
+  <% end %>
+<% end -%>

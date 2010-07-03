@@ -1,0 +1,20 @@
+<% content_for(:intro) do %>
+	<h1>Manage Jobs Queues</h1>
+	<p class="solo">Use the interactive interface below to manage your Jobs Queues.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>New Queue</h2>
+	
+	<% semantic_form_for(@jobs_queue) do |form| %>
+		<%= render(:partial => 'form', :use_full_path => true, :locals => {:form => form}) %>
+		<% form.buttons do %>
+      <%= form.commit_button(:label => 'Create Queue') %>
+		<% end %>
+		<span class="form-cancel">or <%= link_to('Cancel', jobs_queues_path) %></span>
+	<% end %>
+	<%= clear %>
+
+	<%= javascript_include_tag('jobs_queues/new') %>
+	<%= clear %>
+<% end -%>

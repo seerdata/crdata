@@ -1,0 +1,31 @@
+<% content_for(:intro) do %>
+	<%= content_tag(:h1, 'Manage Account') %>
+	<%= content_tag(:p, 'Use the interactive interface below to manage your account settings.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <%= content_tag(:h2, 'Notifications settings') %>
+  <% form_tag(save_notifications_account_preferences_path) do %>
+    <% content_tag(:p) do %>
+      <%= check_box_tag(:private, 1, (@user.queue_notification_preference and ['all', 'private'].include?(@user.queue_notification_preference.value))) %>
+      Email when a job on a Private Queue ends.
+    <% end %>
+    <% content_tag(:p) do %>
+      <%= check_box_tag(:public, 1, (@user.queue_notification_preference and ['all', 'public'].include?(@user.queue_notification_preference.value))) %>
+      Email when a job on a Public Queue ends.
+    <% end %>
+    <% content_tag(:p) do %>
+      <%= check_box_tag(:time, 1, @user.time_notification_preference) %>
+      Email when a job takes more then <%= text_field_tag(:value, @user.time_notification_preference ? @user.time_notification_preference.value : '', :class => 'text no3') %> minutes.
+    <% end %>
+    
+    <% content_tag(:fieldset,  :class => 'buttons') do %>
+      <% content_tag(:ol) do %>
+        <% content_tag(:li, :class => 'commit') do %>
+          <%= submit_tag 'Save' %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', account_path) %></span>
+  <% end %>
+<% end -%>

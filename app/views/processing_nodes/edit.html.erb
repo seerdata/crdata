@@ -1,0 +1,24 @@
+<h1>Editing processing_node</h1>
+
+<% form_for(@processing_node) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :ip_address %><br />
+    <%= f.text_field :ip_address %>
+  </p>
+  <p>
+    <%= f.label :node_identifier %><br />
+    <%= f.text_field :node_identifier %>
+  </p>
+  <p>
+    <%= f.label :active %><br />
+    <%= f.check_box :active %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @processing_node %> |
+<%= link_to 'Back', processing_nodes_path %>

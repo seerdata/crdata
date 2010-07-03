@@ -1,0 +1,2 @@
+class JobDataSetsController < ApplicationController
+end

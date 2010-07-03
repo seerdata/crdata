@@ -1,0 +1,15 @@
+<% content_for(:intro) do %>
+	<h1>Manage AWS Keys</h1>
+	<p class="solo">Use the interactive interface below to manage your AWS Keys.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>New AWS Key</h2>
+	<% semantic_form_for(@aws_key) do |form| %>
+		<%= render(:partial => 'form', :use_full_path => true, :locals => {:form => form}) %>
+    <% form.buttons do %>
+      <%= form.commit_button(:label => 'Create AWS Key') %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', aws_keys_path) %></span>
+  <% end %>
+<% end -%>

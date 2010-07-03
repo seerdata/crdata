@@ -1,0 +1,10 @@
+<% if @job.successful %>
+Job was successfully finished.
+
+You can view the job results following this <%= link_to('link', "#{S3_URL}/results/#{@job.uuid}/index.html", :target => 'results') %>
+You can view the job logs following this <%= link_to('link', "#{S3_URL}/logs/#{@job.uuid}/job.log", :target => 'logs') %>
+<% else %>
+Job was finished with errors.
+
+You can view the job logs following this <%= link_to('link', "#{S3_URL}/logs/#{@job.uuid}/job.log", :target => 'logs') %>
+<% end %>

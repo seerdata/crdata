@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  id: 1
+  source_code: MyString
+  effort_level: 1
+  name: MyString1
+  description: MyString
+
+two:
+  id: 2
+  source_code: MyString
+  effort_level: 1
+  name: MyString2
+  description: MyString

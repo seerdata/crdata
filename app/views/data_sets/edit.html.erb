@@ -1,0 +1,35 @@
+<% content_for(:intro) do %>
+	<h1>Manage Data</h1>
+	<p class="solo">Use the interactive interface below to manage your data.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>Edit dataset</h2>
+
+  <% semantic_form_for(@data_set) do |form| %>
+    <% content_tag(:ul, :class => 'form') do %>
+	    <%= form.input(:name, :input_html => { :class => 'text'}) %>
+	    <%= form.input(:tag_list, :input_html => { :class => 'text'}, :hint => 'Needs to be separated by commas') %>
+	    <%= clear(:li) %>
+	    <%= form.input(:description, :input_html => { :rows => 6, :class => 'text'}) %>
+	    <%= clear(:li) %>
+      <li class="spark-adv-control">
+        <%= label_tag(:visibility) %>
+        <%= select_tag(:visibility, options_for_select(%w(public private share), visibility = get_visibility(form.object, params[:visibility])), :id => 'visibility') %>
+      </li>
+      <% content_tag(:li, :id => 'select_groups', :style => (visibility == 'share') ? '' : 'display: none') do %>
+        <%= label_tag(:groups) %>
+        <%= select_tag(:groups, options_for_select((current_user.groups.approved - current_user.groups.default).collect{|group| [group.name, group.id.to_s]}, get_groups(form.object, params[:groups])), :multiple => true) %>
+      <% end %>
+      <%= clear(:li) %>
+      <%= content_tag(:li, "Dataset file: #{link_to(@data_set.url, @data_set.url, :target => :blank)}") if @data_set.is_public %>
+    <% end -%>
+	  <br />
+    
+    <% form.buttons do %>
+      <%= form.commit_button %>
+    <% end %>
+    <%= content_tag(:span, 'or ' + link_to('Cancel', (current_user and current_user.is_site_admin? and current_user != @data_set.owner) ? by_user_data_sets_path(:user_id => @data_set.owner.id) : data_sets_path), :class => 'form-cancel') %>
+  <% end %>
+	<%= javascript_include_tag('data/edit') %>
+<% end -%>

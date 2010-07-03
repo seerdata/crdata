@@ -1,0 +1,27 @@
+<% content_tag(:div, :id => 'wizard_selection', :class => 'wizard_selection') do %>
+  <div class="no_pag"><%= link_to_remote('View all records', :url => get_selected_data_sets_path(:type => params[:type], :id => params[:id], :view => 'all')) %></div>
+  <%= "<h3>Datasets tagged with <em>\" #{params[:id]} \"</em></h3>" if params[:type] == 'tag' %>
+  <% content_tag(:table, :id => 'sdt', :class => 'sdt') do %>
+    <% content_tag(:thead) do %>
+      <% content_tag(:tr) do %>
+        <%= content_tag(:th, link_to('ID')) %>
+        <%= content_tag(:th, link_to('Name')) %>
+        <%= content_tag(:th, '') %>
+      <% end %>
+    <% end %>
+    <% content_tag(:tbody) do %>
+      <% @data_sets.each do |data_set| %>
+        <% content_tag(:tr, :id => "tr_#{data_set.id}", :onmouseover => 'changeColor(this, true);', :onmouseout => 'changeColor(this, false)', :onclick => "selectElement('tr_#{data_set.id}', #{data_set.id}, 'data_sets')", :class => (data_set == @data_sets.first) ? 'current' : '') do %>
+          <%= content_tag(:td, data_set.id) %>
+          <%= content_tag(:td, data_set.name) %>
+          <%= content_tag(:td, get_data_set_actions(data_set)) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end unless @data_sets.blank? %>
+  <%= will_paginate(@data_sets, :id => 'ajax', :params => {:controller => 'data_sets', :action => 'get_selected', :type => params[:type], :id => params[:id]}) unless params[:view] or @data_sets.blank? %>
+  
+  <% content_tag(:div, :id => 'some_id', :class => 'some_id') do %>
+    <%= render(:partial => 'data_sets/logs', :locals => {:data_set => @data_sets.first, :logs => @logs}) %>
+  <% end unless @data_sets.blank? %>
+<% end %>

@@ -1,0 +1,47 @@
+<%= form.error_messages %>
+<% content_tag(:ul, :class => 'form') do %>
+  <% content_tag(:div, :id => 'upload_file', :style => (@r_script.source_code.blank?) ? '' : 'display: none') do %>
+    <%= form.input(:file, :as => :file, :label => 'Upload file') %>
+    <li class="spark-adv-control">
+      <br /><br />
+      <%= content_tag(:strong, 'or ' + link_to('copy/paste inside our code editor', '#', {:id => 'show_edit_link'})) %>
+    </li>
+  <% end %>
+  
+  <% content_tag(:div, :id => 'edit_file', :style => (@r_script.source_code.blank?) ? 'display: none' : '') do %>
+    <%= form.input(:source_code, :lable => 'Code editor', :input_html => {:rows => '10'}) %>
+    <%= clear(:li) %>
+    <li class="spark-adv-control">
+      <%= 'or ' + link_to('switch back to upload file', '#', {:id => 'show_upload_link'}) %>
+    </li>
+  <% end %>
+  <%= clear(:li) %>
+
+  <%= form.input(:name, :label => 'Script Name', :input_html => { :class => 'text'}) %>
+  <%= form.input(:tag_list, :input_html => { :class => 'text'}, :hint => 'Needs to be separated by commas') %>
+  <%= form.input(:estimate, :as => :select, :collection => ['seconds', 'minutes', 'hours', 'days'], :label => 'Approx. CPU requirement') %>
+  <%= clear(:li) %>
+
+  <li class="spark-adv-control">
+    <%= label_tag(:visibility) %>
+    <%= select_tag(:visibility, options_for_select(%w(public private share), visibility = get_visibility(form.object, params[:visibility])), :id => 'visibility') %>
+  </li>
+  
+  <% content_tag(:li, :id => 'groups', :style => (visibility == 'share') ? '' : 'display: none') do %>
+    <%= label_tag(:groups) %>
+    <%= select_tag(:groups, options_for_select((current_user.groups.approved - current_user.groups.default).collect{|group| [group.name, group.id.to_s]}, get_groups(form.object, params[:groups])), :multiple => true) %>
+  <% end %>
+  <%= clear(:li) %>
+  
+  <li id="help_link" class="spark-adv-control">
+    <br />
+    <%= content_tag(:strong, "Do you want to provide a #{link_to('small tooltip', '#', {:id => 'show_tooltip_link'})} or a #{link_to('full help page', '#', {:id => 'show_help_page_link'})}?") %>
+  </li>
+  <%= clear(:li) %>
+  
+  <li id="help_text" style="display:none;"><ul>
+    <%= form.input(:description, :input_html => {:rows => '7', :class => 'mceEditor'}) %></ul><br />
+    <%= 'or ' + link_to('remove the text', '#', {:id => 'hide_help_text_link'}) %>
+  </li>
+  <%= clear(:li) %>
+<% end -%>

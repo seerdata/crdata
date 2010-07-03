@@ -1,0 +1,22 @@
+<% content_for(:intro) do %>
+	<h1>Mange Membership</h1>
+	<p class="solo">Use the interactive interface below to manage your Groups.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <h2>New membership invitation</h2>
+  <%= content_tag(:p, "Send invitation to join <strong>#{@group_user.group.name}</strong>") %>
+	<% semantic_form_for(@group_user) do |form| %>
+    <ul class="form">
+      <li>
+        <%= label_tag(:email, 'Email') %>
+	    <%= text_field_tag(:email, params[:email], :class => 'text') %>
+	  </li>
+    <%= form.input(:group_id, :as => :hidden, :input_html => { :name => 'email', :class => 'text'}) %>
+    </ul>
+    <% form.buttons do %>
+      <%= form.commit_button(:label => 'Send invitation') %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', @group_user.group) %></span>
+  <% end %>
+<% end -%>

@@ -1,0 +1,18 @@
+.spark-adv-submit, .form li.commit, ol li.commit, .embedArea{ float:left; background:url(/images/call2action.png) left bottom no-repeat; height:32px; padding:0 0 0 20px; margin:0 5px 0 0; display:inline; width:auto;}
+.spark-adv-submit input, .spark-adv-submit a, .spark-adv-submit input:active, .spark-adv-submit a:active,
+.commit input, .commit input:active, .embedButton{ background:url(/images/call2action.png) right bottom no-repeat #fff; height:32px; font:bold 15px 'Trebuchet MS', Arial,Helvetica,sans-serif; color:#fff; text-decoration:none; border:none; display:inline-block; padding:0 20px 2px 0; margin:0; cursor:pointer; overflow:visible; width:auto;}
+.spark-adv-submit a, .spark-adv-submit a:active{ height:25px; padding-top:5px;}
+.form-cancel{ color:#aaa; position:relative; top:10px;}
+.buttons{ float:left; position:relative; z-index:1;}
+
+/* UPLOADER */
+.swfUploadArea{ float:left; position:relative;}
+.embedButton{ width:100px; margin-top:-2px;}
+.embedArea input{ display:none;}
+.embedButton object{ margin-top:7px;}
+
+ul.uploadContainer{ width:370px; padding:10px; position:absolute; top:-160px; right:-600px;}
+ul.uploadContainer li{ height:22px; font-size:13px; margin-bottom:10px; position:relative;}
+ul.uploadContainer li h6{ font-size:13px;}
+ul.uploadContainer li div.bar{ width:100%; height:4px;}
+ul.uploadContainer li div.progress{ background-color:#f90; height:4px; position:absolute; top:17px;}

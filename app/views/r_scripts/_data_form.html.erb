@@ -1,0 +1,32 @@
+
+<%= javascript_include_tag :defaults %>
+<%= content_tag(:h2, 'Parameters') unless r_script.parameters.blank? %>
+<% r_script.parameters.each do |parameter| %>
+  <% i = r_script.parameters.index(parameter) %> 
+  <% content_tag(:div, :id => "job_job_parameters_attributes_#{i}_value_input") do %>
+    <% default_value = (@job and (job_parameter = @job.job_parameters.select{|jp| jp.parameter_id == parameter.id}.first) and !job_parameter.value.blank?) ? job_parameter.value : parameter.default_value %>
+    <%= label_tag("job_job_parameters_attributes_#{i}_value", "#{parameter.title} (#{parameter.kind})") %>
+    <% if parameter.kind == 'Dataset' %>
+      <%= text_field_with_auto_complete("jp_#{i}", :data_set_id, 
+          {:name => "data_sets", :autocomplete => "off", 
+           :value => job_parameter.try(:data_set).try(:name), 
+           :class => 'text',
+           :note => "Type at least 3 chars and select a name from the list"}, 
+          {:url => {:controller => 'r_scripts', :action => 'auto_complete_for_data_set'}, 
+          :after_update_element => "function (element, value) { $('job_job_parameters_attributes_#{i}_data_set_id').value = value.value}", :min_chars => 3}) %>
+      <%= hidden_field_tag "job[job_parameters_attributes][#{i}][data_set_id]", job_parameter.try(:data_set).try(:id) %>
+      <%= clear %>
+      <%= link_to('or upload a dataset file', '#', :onclick => "$('data_set_form').style.visibility = 'visible'; $('index').value = '#{i}'; return false;") %>
+    <% elsif parameter.kind == 'Boolean' %>
+      <%= select_tag("job[job_parameters_attributes][#{i}][value]", options_for_select({'true' => 1, 'false' => 0}, default_value.to_i)) %>
+    <% elsif parameter.kind == 'Enumeration' %>
+      <%= select_tag("job[job_parameters_attributes][#{i}][value]", get_enum_options(parameter.min_value, parameter.max_value, parameter.increment_value, default_value)) %>
+    <% elsif parameter.kind == 'List' %>
+      <%= select_tag("job[job_parameters_attributes][#{i}][value]", options_for_select(parameter.default_value.split(','), default_value)) %>
+    <% else %>
+      <%= text_field_tag("job[job_parameters_attributes][#{i}][value]", default_value, :class => 'text') %>
+    <% end %>
+    <%= hidden_field_tag("job[job_parameters_attributes][#{i}][parameter_id]", parameter.id) %>
+    <%= content_tag(:p, @job.job_parameters[i].errors.on(:value), :class => 'inline-errors') if @job and @job.job_parameters[i] and !@job.job_parameters[i].errors.size.zero? %>
+  <% end %>
+<% end %>

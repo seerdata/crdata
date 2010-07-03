@@ -1,0 +1,6 @@
+<p>
+<%= @job.user ? @job.user.name : 'Anonymous user' %> created a job that needs user defined R packages.
+<br/>
+<br/>
+You can review the job at: <%= link_to(@job.description, job_url(@job)) %>
+</p>

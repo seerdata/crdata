@@ -1,0 +1,29 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Processing Nodes') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your Processing Nodes.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <h2>
+    <span>IP Address:</span>
+    <%=h @processing_node.ip_address %>
+  </h2>
+  <h2>
+    <span>Node Identifier:</span>
+    <%=h @processing_node.node_identifier %>
+  </h2>
+
+ <h2>
+    <span>Queue:</span>
+    <%=h @processing_node.jobs_queue.name %>
+  </h2>
+  
+  <hr size="0" />  
+  <% semantic_form_for(@processing_node, :url => do_manage_donation_processing_node_path(@processing_node)) do |form| %>
+    <% form.buttons do %>
+      <%= form.commit_button(:label => 'Approve Processing Node Donation') %>
+      <%= form.commit_button(:label => 'Reject Processing Node Donation') %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', processing_nodes_path) %></span>
+  <% end %>
+<% end %>

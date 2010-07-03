@@ -1,0 +1,28 @@
+<% content_for(:head) do %>
+  <%= ajaxful_rating_style %>
+<% end -%>
+
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'View R Script Votes') %>
+  <%= content_tag(:p, "View votes for \"<strong>#{@r_script.name}</strong>\" script", :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <% if @rates %>
+    <%= content_tag(:h2, DATASET_DIMENSIONS[params[:dimension]]) %>
+    <% @rates.each do |rate| %>
+      <hr size="0" />
+      <div class="left_rating"><strong><%= link_to(rate.rater.name, votes_user_path(rate.rater)) %></strong> <%= ratings_for @r_script, rate.rater, :dimension => params[:dimension], :show_user_rating => true, :force_static => true %></div>
+      <% if comment = @r_script.comments.find_by_user_id(rate.rater.id) %>
+        <%= render(:partial => 'comments/comment', :locals => {:comment => comment}) %>
+      <% elsif rate.rater == current_user %>
+        <%= render(:partial => 'comments/form', :locals => {:comment => @comment}) %>
+      <% end  %>
+      <%= clear %><br />
+    <% end %>
+  <% else %>
+    <p>Unknown R Script attribute: <%= params[:dimension] %> or <%= params[:stars] %> is not in 1 to <%= RATING_STARS %> interval.</p>
+  <% end %>
+  <br/><br/>
+  <%= content_tag(:span, link_to('Back', r_scripts_path), :class => 'form-cancel') %>
+<% end %>

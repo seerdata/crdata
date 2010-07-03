@@ -1,0 +1,48 @@
+<% content_for(:head) do %>
+  <%= ajaxful_rating_style %>
+ <% end -%>
+
+<% content_for(:intro) do %>
+	<h1>Manage Jobs</h1>
+	<p class="solo">Use the interactive interface below to manage your analysis runs.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <% content_tag(:span, :class => 'spark-adv-submit', :style => 'float:right;') do %>
+    <%= link_to('Next Step', ((RScript.count_remaining_data_set_parameters(session[:r_script_id], session[:data_set_parameters]) > 1) ? new_job_select_data_set_path(:parameter_id => RScript.get_next_data_set_parameter(session[:r_script_id], session[:data_set_parameters]).id, :data_set_id => @data_sets.first.id) : new_job_set_information_path(:parameter_id => RScript.get_next_data_set_parameter(session[:r_script_id], session[:data_set_parameters]).id, :data_set_id => @data_sets.first.id)), :id => 'next_step') %>
+  <% end unless @data_sets.blank? %>
+  
+  <%= content_tag(:h2, "New Job - Step #{session[:data_set_parameters].size + 2} from #{RScript.find(session[:r_script_id]).count_steps} (dataset selection for #{@parameter.name})", :id => 'section_title') %>
+  <br /><br /><br />
+  <% content_tag(:div, :class => 'relative') do %>
+    <% content_tag(:div, :id => 'search_form') do %>
+      <% form_remote_tag(:url => get_selected_data_sets_path(:type => 'search')) do %>
+        <%= text_field_tag(:id,
+              params[:id] || 'search datasets', 
+              :class => 'text', 
+              :onfocus => %Q(if (this.value == 'search datasets') { this.value = '' }; this.style.color = '#555555';),
+              :onblur  => %Q(if (this.value == '') { this.value = 'search datasets' }; this.style.color = '#aaaaaa';)) %>
+        <%= submit_tag(:search, :class => 'search_submit') %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% content_tag(:div, :class => 'wizard_sidebar') do %>
+    <%= content_tag(:h3, 'Dataset type:') %>
+    <% content_tag(:ul) do %>
+      <%= content_tag(:li, link_to_remote('Public', :url => get_selected_data_sets_path(:type => 'public')), :id => 'public', :class => (params[:type] == 'public') ? 'current' : '') unless DataSet.count_public.zero? %>
+      <%= content_tag(:li, link_to_remote('My Private Files', :url => get_selected_data_sets_path(:type => 'private')), :id => 'private', :class => (params[:type] == 'private') ? 'current' : '') if current_user and !current_user.groups.default.first.count_data_sets.zero? %>
+      <% current_user.groups.not_default.each do |group| %>
+        <%= content_tag(:li, link_to_remote(group.name, :url => get_selected_data_sets_path(:type => 'group', :id => group.id)), :id => group.id, :class => (params[:type] == group.id) ? 'current' : '') unless group.count_data_sets.zero? %>
+      <% end if current_user %>
+      <%= content_tag(:li, link_to_remote('All', :url => get_selected_data_sets_path(:type => 'all')), :id => 'all', :class => (params[:type] == 'all') ? 'current' : '') if current_user %>
+    <% end %>
+    <%= render :partial => 'data_sets/tags', :locals => {:tags => @tags} %>
+  <% end %>
+  <%= render :partial => 'data_sets/selected' %>
+  <%= clear %>
+  <br />
+  <%= link_to('&laquo; cancel and go back', jobs_path) %>
+  <%= clear %>
+  <%= javascript_include_tag('select') %>
+<% end -%>
+

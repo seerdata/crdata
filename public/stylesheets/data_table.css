@@ -1,0 +1,54 @@
+/* ACTIONS */
+caption, .rel{ position:relative;}
+.header_actions{ position:absolute; top:-40px; right:0px;}
+#jobs-index .header_actions{ top:-74px;}
+.header_actions li{ float:left;}
+.header_actions a, .header_actions a:visited, .search_submit, .deleteall_submit, .feedback_submit, .notification_submit{ float:left; background:#d30 url(../images/overlay.png) repeat-x; height:16px; font:bold 13px Arial, Helvetica, sans-serif; color:#fff; text-decoration:none; text-transform:capitalize; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #d30; padding:4px 9px; margin:0 0 0 10px; cursor:pointer; width:auto; overflow:visible;}
+.search_submit, .deleteall_submit{ height:26px; padding:3px 9px 5px;}
+.header_actions a:hover{ background-color:#c00; border-color:#c00;}
+
+.no_pag{ text-align:right; margin-bottom:10px;}
+
+/**/
+.sdt{ background:#fff; width:100%; border-collapse:collapse;}
+.sdt th{ background:#ffce8e url(../images/th.png) bottom repeat-x; font:bold 12px Tahoma, Arial, Helvetica, sans-serif; color:#777; text-align:left; border-right:1px solid #fff; padding:13px 5px 12px;}
+.sdt th a{ color:#333; text-decoration:none; white-space: nowrap; display:block;}
+.sdt th a:hover{ text-decoration:underline;}
+.sdt td{ font-size:11px; line-height:16px; border-bottom:1px solid #eee; border-right:1px solid #fff; overflow:hidden; padding:7px 5px; vertical-align:top;}
+.sdt td a{ color:#555; text-decoration:underline; margin-right:5px;}
+.sdt td a:hover{ text-decoration:none;}
+.sdt td.actions{ text-align:right;}
+.sdt td.actions a{ font-style:italic; color:#999;}
+.sdt td.no_content, .no_content{ font-weight:bold; font-style:italic; text-align:center;}
+
+/* ALTERNATE COLORS */
+.sdt tr.stripe td, .sdt tr.even td{ background:#fafafa;}
+.sdt tr.hover td{ background:#ffc; cursor:pointer;}
+.sdt tr.current td{ background-color:#c30; color:#fff;}
+.sdt tr.current td a{ color:#ffc;}
+/* SORT */
+.sdt th.asc, .sdt th.desc{  background-image:url(../images/th_order.png);}
+.sdt th.asc a, .sdt th.asc a:hover, .sdt th.desc a, .sdt th.desc a:hover{ background:url(../images/asc.png) 0 50% no-repeat; color:#c30; padding-left:15px; cursor:pointer;}
+.sdt th.desc a, .sdt th.desc a:hover{ background-image:url(../images/desc.png);}
+.sdt td.asc, .sdt td.desc, 
+.sdt tr.stripe td.asc, .sdt tr.stripe td.desc{ background:#fff8ed; font-style:italic; color:#000; border-bottom-color:#efe8dd;}
+.sdt tr.stripe td.asc, .sdt tr.stripe td.desc{ background:#faf3e8;}
+
+/* PAGINATION */
+.pagination{ background-color:#fafafa; font:11px Arial, Helvetica, sans-serif; text-align:center; border-bottom:1px solid #eee; padding:8px 0;}
+.pagination .disabled{ color:#bbb;}
+.pagination .current{ background:#d30 url(../images/overlay.png) repeat-x; font-weight:bold; color:#fff; border:1px solid #d30;}
+.pagination a, .pagination span{ margin:0 2px; padding:2px 7px;}
+.pagination a{ background-color:#eee; color:#555; text-decoration:none; border:1px solid #ddd;}
+.pagination a:hover{ background:#fff; color:#d30; border-color:#d30;}
+
+/*STATUS*/
+.completed{ color:#090;}
+.failed{ color:#c00;}
+.icon16{ margin:-3px 0 -2px;}
+
+/* SEARCH */
+#search_form{ width:370px; line-height:26px; position:absolute; left:0; top:-40px;}
+#search_form input{ float:left; margin-top:0;}
+#search_form input.text{ color:#aaa; background-color:#ffc; width:200px; padding:4px;}
+#search_form a{ font-size:11px; color:#999; text-decoration:none; margin-left:5px;}

@@ -1,0 +1,16 @@
+page.replace_html(:wizard_selection, :partial => 'selected')
+page.replace_html(:section_title, :text =>  "New Job - Step 1 from #{@r_scripts.blank? ? '1' : @r_scripts.first.count_steps} (script selection)")
+page.replace(:tags, :partial => 'tags', :locals => {:tags => @tags}) unless @tags.blank?
+page << "if (element = $$('li.current').first()) { element.removeClassName('current');}"
+if ['public', 'private', 'all'].include?(params[:type])
+  page << "$('#{params[:type]}').addClassName('current')"
+elsif params[:type] == 'group'
+  page << "$('#{params[:id]}').addClassName('current')"
+end
+if !@r_scripts.blank? and @r_scripts.first.has_data_set_parameters?
+  page << "$('next_step').href = 'select_data_set?r_script_id=#{@r_scripts.first.id}'"
+elsif !@r_scripts.blank?
+  page << "$('next_step').href = 'set_information?r_script_id=#{@r_scripts.first.id}'"
+else
+  page << "$('next_step').href = ''"
+end

@@ -1,0 +1,19 @@
+<% content_for(:intro) do %>
+	<h1>Reset Password</h1>
+	<p class="solo"> Use the interactive interface below to manage your account.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <h2>Retrive Password</h2>
+   
+	<% semantic_form_for(User.new, :url => password_resets_path) do |form| %>
+    <%= form.error_messages %>
+    <ul class="form">
+    	<%= form.input(:email, :input_html => { :class => 'text'}) %>
+    </ul>
+    <% form.buttons do %>
+      <%= form.commit_button(:label => 'Submit') %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', new_user_session_path) %></span>
+  <% end %>
+<% end %>

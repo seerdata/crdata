@@ -1,0 +1,263 @@
+<% content_for(:intro) do %>
+<h1>CRdata User Guide</h1>
+<p>See also our <a href='/tour#tutorials'>video guides</a>.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+
+  <p>The CRdata home page contains some informational text, and three groups of links:
+<ul class="bullet_list">
+  <li> 1. At the top right are links to the User and Script Writing guides, your account settings, and also Register, Login, and Help buttons.</li>
+  <li> 2. At the bottom of the page are links to the Users' Blog (news and discussions), the source code, license, and other information.</li>
+  <li> 3. To the left of the screen are a series of Tabs:</li>
+</ul>
+
+  <h3>Home</h3><p>The CRdata home page.</p>
+  <h3>R Scripts</h3><p>Upload, edit and configure R scripts for use with CRdata.</p>
+  <h3>Data</h3><p>Download, upload and inspect data files here.</p>
+  <h3>Queues</h3><p>A processing Queue may have one or more processing Nodes associated with it.</p>
+  <h3>Processing Nodes</h3><p>You can create new processing nodes and attach them to Queues of your choice.</p>
+  <h3>Run Analyses</h3><p>Run scripts, inspect the analysis runs, etc.</p>
+  <h3>Groups</h3><p>Where you can create User Groups. Group members can share private data or scripts.</p>
+  <br />
+  <p>These pages allow users to edit and use CRdata resources via Graphical User Interfaces.</p>
+ 
+<h2>Running an R Script as a Guest User</h2>
+<ul class="bullet_list">
+<li>If you have a data file you would like to process, upload it by clicking the Data tab, then click Add Dataset.</li>
+<li>Click the Run Analyses tab and then click Add Job - Wizard. If the script you choose to run requires inputs, CRdata will present you with appropriate dialog forms. The wizard will also prompt you to choose a processing Queue. As a Guest, you will have access to only one processing queue: 'Public'. Select 'Public Queue' from the drop-down menu and give your job a name.</li>
+<li>Once you have launched your new job, you will be returned to the Run Analyses page. You will see your new Job listed at the top of the Jobs listing. The page is refreshed automatically about every 30 seconds. To update the page more frequently, use your browser's refresh button.</li>
+<li>If all is well, the status symbol will change first to a green disk (indicating your job is being processed) and then to a green tick mark (indicating your job has completed successfully).</li>
+<li>If your job completed successfully, you can click the 'results' link. This will open a new web page ( could be a new browser page or a tab depending on your browser settings). If you already generated a Results page before, the contents of that page will be updated every time you click the Results link.</li>
+<li>If your Job failed, click the Logs link and check the error message displayed on the Logs page (could be a new browser page or a tab depending on your browser settings). If you already generated a Logs page before, the contents of that page will be updated every time you click the Logs link.</li></ul>
+
+<h3>Congratulations! You have just run your first CRdata analysis.</h3>
+
+
+<h2>Registering as a CRdata User</h2>
+<p>The only valid information you need to provide to register with CRdata is an email address. After entering your name and email address and clicking Create User, you will be sent an email with a confirmation link. This confirmation is necessary because later on you will want CRdata to send you emails about your analysis jobs.</p>
+<p>Note: THE REMAINDER OF THIS GUIDE ASSUMES YOU HAVE REGISTERED WITH CRdata</p>
+
+<h2>User-Defined Groups & Group Privileges in CRdata</h2>
+
+<p>A Registered User can create groups, invite other users to join the groups (s)he created, accept user requests to join the groups, and assign additional or alternate administrator(s) for the groups.</p>
+<h3>User Roles</h3>
+<p>Registered CRData Users may play four roles:<br />
+<strong>User: </strong> This includes all Registered Users.<br />
+<strong>Admin: </strong> Users with administration rights for a group.<br />
+<strong>Owner: </strong> Users who create a new group, R Script, or Dataset file have administration rights for these items.<br />
+<strong>Site Admin: </strong> Users who have CRdata-wide site administration rights </p>
+
+<h3>Association of R Scripts and Data Files with Groups</h3>
+
+<p>R scripts and Dataset files created by Users can be:<br />
+<strong>Public: </strong>Accessible to all.<br />
+<strong>Private: </strong>Only the user who created the file can access it.<br />
+<strong>Shared: </strong>Only the members of assigned groups have access to these files. The submitter of the file must be a member of the group(s) selected.</p>
+
+<p>Only Registered Users can create R Scripts. However, Guest users can create Public dataset files.</p>
+<h3>Queues</h3>
+<p>
+A user can create processing Queues. Queues can be:<br />
+<strong>Private: </strong>Only the user who created the Jobs Queue can use it.<br />
+<strong>Shared: </strong>Only the members of the selected groups can use it (user can choose only form the groups (s)he is part of)</p>
+<p>Only Registered Users can create Jobs Queues. Only Site Admins can create public Jobs Queues.</p>
+<p>Note that until a Queue is assigned one or more Processing Nodes (see below), it cannot perform any processing.</p><br />
+
+<h3>Processing Nodes</h3>
+
+<p>A user can create Processing Nodes for the Queues they have created. Only site admins can create Processing Nodes for Public Queues.</p>
+
+<p>Users can also donate Processing Nodes to Queues that are not associated with the groups they are admin of (including Public Queues). Donated Processing Nodes must be approved by a Site Admin.</p>
+<h3>Running Analyses</h3>
+<p>
+A user can create a Job, then submit it to one of the public Queues or one of the Queues associated with the groups (s)he is part of.<br /><br />
+A Guest User can initiate an analysis Job using any of the public R Scripts, personal or public data, and Public Queues.</p>
+
+<h2>Creating New CRdata Groups</h2>
+<p>To create  a new CRdata User Group, click the Groups tab, then click Add Group. In the box provided, type a Name for the Group. If you would like others to know what the group is for, provide a short description in the box provided. If you would like others to be able to see who is already in the group, tick the box provided. After you have completed the form return to the Groups page. You will note that new Group is now listed on the page. Clicking on either the name or Description of the Group will take you to a page with a button for inviting members to the Group. Alternatively, CRdata Users can apply to join your Group(s). </p>
+<p>If you invite a User to join a Group, they will receive an email with links to Accept or Reject the Invitation. If a User applies to join a Group you Administer, you will receive an email with links to Accept or Reject the request. Group Administrators can remove members from a Group at any time, and Members can opt out of a Group at any time by clicking the Leave link n the Groups page.</p>
+
+<h2>Submitting a New R Script to CRdata</h2>
+
+<ul class="bullet_list">
+<li>Read the <a href='/devguide'>'How to prepare R Scripts for CRdata'</a> page (accessible from the "R Script Dev Guide" button at the top right of every page), and prepare your script accordingly.</li>
+<li>Click the R Scripts tab, then click Add Script.</li>
+<li>Upload or copy/paste your script.</li>
+<li>In the Script Name Box, give the script a user-friendly name.</li>
+<li>In the Tag List, type a series of comma-separated keywords using which users may search for your script.</li>
+<li>In the Visibility drop down menu, choose Private if you want the script to be accessible only to you. Choose Share if you want to share the script with a CRdata Group, or Public if you want the script to be available to all CRdata users.</li>
+<li>For Shared and Public scripts, we recommend that you provide either a small ToolTip help text, or use the CRdata Editor to generate a full HTML help page for your script.</li>
+<li>In the lower half of the New Script page, CRdata provides a simple means to generate interactive input forms for your script. For each input to the script:
+<br /><br />
+<ul class="bullet_list2">
+<li>In the Parameter Name box, enter the name of the input variable as it appears in your R code.</li>
+<li>In the Display Name box, provide a user friendly and meaningful name for the above input variable.</li>
+<li>From the Type drop-down box, choose the variable type. Note that the Type Dataset represents a file of any format. CRdata does not perform any error checking on input files.  It is up to you to ensure that the input file meets your script's requirements.</li>
+<li>When you have filled in all the boxes, click Create Parameter.  The parameter name will appear in the Parameter List to the right of the page.</li>
+<li>Repeat this procedure for all inputs to your script.</li>
+</ul></li>
+<li>When you have finished all preparations, click the Create Script button. You will be returned to the R Scripts page. You should see the new script at the top of the scripts listed on this page.</li>
+<li>To find a script quickly, use the search box at the top left of the page. All Scripts whose Name or Tag List contains the search string will be shown in the Scripts listing. To return to a listing of all Scripts, simply click the R Scripts tab.</li>
+</ul>
+
+<h2>Uploading a Data File to CRdata</h2>
+<ul class="bullet_list">
+<li>Click the Data tab, then click Add Dataset.</li>
+<li>Fill in the Name, Tag List and Description boxes with user-friendly text and keywords.</li>
+<li>From the Visibility Drop down box, choose public, private, or shared. If you choose private or shared, you will be presented with the option to save the file on CRdata, or to use your own private Amazon S3 Bucket (in which case, you will be prompted to privde your AWS Keys and Bucket number). <strong>IMPORTANT: CRdata has limited resources, so please use free storage of private files on CRdata only for small files, and delete such files as soon as you are finished with them.</strong></li>
+<li>Click Upload Dataset. You will be presented with a directory browser with which you can navigate to the data file on your local computer.</li>
+<li>Once you have uploaded your file, you will be returned to the Data page and should see the uploaded file at the top of the listing.</li>
+<li>You can change the properties of a data file using the Edit link. </li>
+<li>You can remove a data file from CRdata by clicking Destroy.</li>
+<li>You can download a data file to your pesonal computer by clicking the http link shown on the Edit page, or the link that appears after clicking the data file name or description.</li>
+<li>To find a data file quickly, use the search box at the top left of the page. All data files whose Name or Tag List contains the search string will be shown in the data files listing. To return to a listing of all Datasets, simply click the Datasets tab.</li></ul>
+
+<h3>Shared and Private Datasets</h3>
+<p>Users who have their own Amazon S3 storage accounts can save their Private/Shared data in their private S3 Bucket. We recommend the use of S3 buckets for large amounts of data. See http://aws.amazon.com/s3/ for more information about the Amazon S3 service.</p>
+
+<h2>Defining New Processing Queues</h2>
+<p>User-defined Processing Queues allow you to perform large-scale data analysis using the full resources of the Amazon Elastic Computing Cloud. Simply click on the Queues tab and then Add Queue, give your Queue a name, and choose the visibility (accessibility) of the Queue. Private Queues are yours alone, whereas Shared Queues can be accessed by members of the Groups you nominate (in the dialog box that appears at the bottom right, click on the Group names you wish to share the Queue with).</p>
+
+<p>If you tick the Autoscale option, you will be presented with a set of dialog boxes for parameters that control the numbers and types of processing nodes as a function of the number of jobs waiting to be processed, waiting time, etc. If you are setting up a shared resource (e.g. for all members of a  research lab, or for students in a class), you can use this feature to automatically add and remove processing nodes as demand rises or dips.</p>
+
+<p>If you set the minimum number of nodes for the queue to zero, then when there are no jobs, CRdata will terminate all associated processor nodes (EC2 Instances). This feature is very useful if you have a queue that you only use occasionally. However note the following IMPORTANT WARNING: autoscaling cannot add or remove nodes in less than 5 minutes. So if you do not want to have to wait five minutes for your first job to be processed, you need to have at least one node associated with your queue at all times.</p>
+
+<h2>Adding and removing Processing Nodes</h2>
+<p>A User-defined Queue is not functional unless it has one or more Processing Nodes assigned to it. To add a Node to a Queue, click the Processing Nodes tab, then click the Add Node.</p>
+
+<h3>Adding on-demand Amazon EC2 Processing Nodes</h3>
+<p>Once you have opened an Amazon EC2 account and created a "Key Pair" (see how <a href='http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/'>HERE</a>), you can add private/shared EC2 Processing Nodes to your CRdata Processing Queues automatically. Simply click on the Processing Nodes tabs, then on Add Node.  Choose the Queue this Processing Node will serve, then click on the <strong>automatically create an Amazon EC2 node</strong> link. Copy and paste your Keys into the appropriate boxes, and from the drop-down menus choose the processor type you want. CRdata will automatically create the corresponding Amazon EC2 processor Instance and configure it for use with CRdata.</p>
+
+<p><strong>Important Warning:</strong> By default, CRdata does not store your Amazon "Key Pair" and without these, CRdata cannot Terminate the EC2 processor Instance after finishing a Job (analysis) run. When you create a new CRdata Processor Node automatically, you can opt to save your Keys in CRdata. If you do this, then CRdata can automatically create processor nodes for you, and terminate the instances after finishing a Job.</p>
+	
+<p><strong>If you prefer not to store your Keys on CRdata, you must Terminate Nodes manually:</strong></p>
+
+  <ul class="bullet_list">
+  <li>
+  Go to the Processing Nodes page and click the Destroy link for the node you wish to terminate.</li>
+  <li>From the Amazon AWS Management Console, navigate to the Instances page and manually Terminate the Instance no longer in use. <strong>Note that Amazon will be charging you for the Instance until you complete this step.</strong></li></ul>
+
+ <h3>Adding Amazon EC2 Reserved Instances to CRdata</h3>
+  <p>For continually used Queues, it may be more convenient (and cheaper) to purchase Amazon Reserved Instances (see how <a href='http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/'>HERE</a>).</p>
+
+  <p>1. Purchase and launch an EC2 Reserved Instance via the Amazon AWS management Console. In the process, you will need to:</p>
+  
+  <ul class="bullet_list">
+<li>Create an EC2 Security Group with the following setting. Under
+'Allowed Connections', select SSH for 'Connection Method', then in the
+'From Ports' and 'To Ports' fields, enter 2222. Also enter 0.0.0.0/0
+in the Source IP field.</li>
+
+<li>Launch the AWS Request Instances Wizard and perform the following steps:
+<br /><br />
+<ul class="bullet_list2">
+<li>In the 'Choose an AMI' page that comes up, click on the 'Community AMIs' tab.</li>
+
+<li>To find the CRdata Amazon Machine Image, type 'r_node' in the
+'Viewing:' search box, then select the CRData AMI from the list
+that appears.</li>
+
+<li>In the 'Advance Instance Options' page, type: url='http://crdata.org'
+uid='123456' in the 'User Data' field (note: 'uid' specified is just
+an arbitrary unique identifier).</li>
+
+<li>In the 'Create Key Pair' page, select your previously created EC2
+'Key Pair' name.</li>
+
+<li>In the 'Configure Firewall' page, select the Security Group you
+created earlier.</li>
+</ul></li>
+<li>N.B. If you are launching a Reserved Instance, you also need to
+choose an Availability Zone ('us-east-1b' for Public CRdata R nodes;
+your choice for private nodes).</li>
+
+
+<li>Once your node has been launched, you need to generate an Elastic IP
+address for it.
+<br /><br />
+<ul class="bullet_list2">
+<li>Click on the Elastic IPs link in the Navigation Window of the AWS
+Management Console.</li>
+
+<li>Click Allocate New Address. Select the new address displayed. A new
+button called "Associate"
+become available, Click it.</li>
+
+<li>In the drop down menu, choose the Instance ID for the new EC2
+Instance you just launched.</li>
+
+<li>Copy your new elastic IP address, then go to the Add Nodes page of CRdata.</li>
+
+<li>Click on the Processing Nodes tab, then click Add Node.</li>
+
+<li>Choose the Queue you would like to associate the new EC2 Node with (if
+you do not yet have a Private Queue, go to the Queues tab and click
+Add Queue).</li>
+
+<li>In the 'Manually add a node' box, enter your the Elastic IP address of
+your new EC2 node.</li>
+</ul></li>
+
+<li>VERY IMPORTANT: Amazon will charge you for every hour that your
+Instance is active, irrespective of whether you are using it for
+analysis or not. If you don't want to be charged the hourly rate, once
+your analysis is finished, you must terminate your instance.
+<br /><br />
+<ul class="bullet_list2">
+<li>On the CRdata Processing Nodes page, click Destroy for the private
+node you no longer require.</li>
+
+<li>Go to your AWS Instances page.</li>
+
+<li>Right click on the Instance you wish to Terminate.</li>
+
+<li>Select Terminate from the drop-down menu.</li>
+
+<li>Go to the AWS Elastic IPs page and click Release Address.</li>
+</ul></li>
+  </ul>
+    
+  <p>2. Log into CRdata.org.</p>
+  <ul class="bullet_list">
+  <li>Click on the Processing Nodes tab, then click Add Node.</li>
+  <li>Choose the Queue you would like to associate the new EC2 Node with (if you do not yet have a Private Queue, go to the Queues tab and click Add Queue).</li>
+  <li>In the 'Manually add a non-EC2 node' box, enter your the Public DNS of your new EC2 node.</li></ul><br />
+  
+  <h3>Adding Nodes that are not Amazon Ec2</h3>
+  
+  <p>CRdata allows users to add processing nodes that are not part of the Amazon EC2 cloud (e.g. nodes from a local cluster). You simply give CRdata the IP address of the node(s) to be added. It is up to you to ensure that the nodes are properly configured (see the <a href="">Programmers Guide</a>).</p>
+  
+  <p><strong>Important Warning:</strong> CRdata requires all nodes attached to a single queue to have identical versions of R and identical package libraries. To ensure correct behavior, you must ensure compliance with this requirement.</p><br />
+
+  <h2>Running Analyses</h2>
+
+  <p>To launch a new Analysis Job, you need to select the R Script, Dataset, Processing Queue and Processing Node you would like to use. Start by clicking the Run Analyses tab. Next, you can either use the Add Job Wizard or launch the job manually. Both buttons are near the top right of the page. In the manual mode, you simply type in the name of the script and data files and set the parameter values in the boxes presented. After you type in the first three letters of a name, CRdata will present you with a list to choose from. Using the wizard: </p>
+  <ul class="bullet_list">
+  <li>Choose the R Script you would like to run and click Next. If the Script requires user input, appropriate dialog boxes will appear. If the Script chosen requires a Dataset file, you will be presented with a directory of the files already on CRdata, or uploading a new file. You are reponsible for making sure that the file you upload is suitable for the chosen Script. </li>
+  <li>Select a queue for the job. Your submission is now complete.</li>
+  <li>You can choose the Queue that will process the Job.</li>
+  <li>In the Status page, you will see details of the Job you just submitted.  If your Job is very quick, you may wish to use the refresh function of your web browser to check the progress of the job. The status should change first to Submitted, then Running, and finally to Completed.</li>
+  <li>You can return to the Run Analyses page at any time. If your job is likely to take a long time, you can leave CRdata and come back to it later. CRdata will send you an email notification when your Run is complete.</li>
+  <li>When the Run is complete, click the Results link in the Actions column on the Run Analyses page. A new browser page will open and display the results of your analysis.</li>
+  <li>If your Job did not complete successfully (e.g. because you provided an incorrect input value), you can see a diagnostic message by clicking the Logs link.</li>
+  <li>If you would like to contact the author of the Script with questions or suggestions (or praise!), click the Feedback link and use the box provided for your message.</li>
+  <li>If you would like to repeat an Analysis Job using a different set of input values, the Clone link provides a short cut.</li>
+  <li>To find a previous Analysis Job quickly, use the search box at the top left of the page. All Jobs whose Name or Tag List contains the search string will be shown in the Jobs listing. To return to a listing of all Jobs, simply click the Run Analyses tab.</li>
+  <li>Finally, you can terminate a Job before it is finished by simply clicking the Cancel link. </li></ul><br />
+
+
+<h2>Configuring your Account Preferences </h2>
+
+<p>Click the My Account button that appears at the top right of all CRdata tabbed pages. You will be directed to the Manage Account page.     
+The Account button on this page allows you to change your username, password, and email address. </p>  
+
+<p>Using the Notifications button, you can choose whether and when CRdata should email you that a job has been completed. </p>
+
+<p>The AWS Keys button allows you to save your private Amazon AWS Keys in CRdata. This will greatly facilitate the launching of private nodes and Queues as described earlier. However, please note that CRdata.org is an open-source and free resource and we cannot provide any security guarantees. If you choose to save your AWS Keys, you can Edit or Delete them at any time via this page. </p>
+
+<p>The Default Availability Zone button allows you to choose the zone from which Amazon will allocate your private processing nodes. CRdata.org is on US-east-1b. </p>
+
+<p>Finally, the Default Queue button lets you choose the queue to which your jobs should be submitted by default. If you set this option, the name of this queue will automatically come up whenever you need to select a queue. This is just for convenience. You can still select a different queue from the drop-down box.</p>
+
+<% end -%>

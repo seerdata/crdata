@@ -1,0 +1,27 @@
+<% content_for(:intro) do %>
+	<h1>Manage Processing Nodes</h1>
+	<p class="solo">Use the interactive interface below to manage your Processing Nodes.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<% content_tag(:div, :class => 'table') do %>
+    <% content_tag(:div, :id => 'search_form') do %>
+      <% form_tag(processing_nodes_path, :method => :get) do %>
+        <%= text_field_tag(:search,
+              params[:search] || 'search processing nodes', 
+              :class => 'text', 
+              :onfocus => %Q(if (this.value == 'search processing nodes') { this.value = '' }; this.style.color = '#555555';),
+              :onblur  => %Q(if (this.value == '') { this.value = 'search processing nodes' }; this.style.color = '#aaaaaa';)) %>
+        <%= hidden_field_tag(:sort, params[:sort]) if params[:sort] %>
+        <%= hidden_field_tag(:show, params[:show]) if params[:show] %>
+        <%= submit_tag(:search, :class => 'search_submit') %>
+      <% end %>
+    <% end %>
+    <% form_tag(destroy_all_processing_nodes_path(:show => params[:show], :sort => params[:sort], :search => params[:search]), :id => :select_form, :method => :delete) do %>
+      <% content_tag(:div, :id => 'processing_nodes_list') do %>
+        <%= render :partial => 'list', :locals => { :processing_nodes => @processing_nodes } %>
+          <% end %>
+        <% end %>
+  <% end %>
+  <%= periodically_call_remote(:url => processing_nodes_path(:statuses => params[:statuses], :show => params[:show], :sort => params[:sort]), :frequency => '10', :update => 'processing_nodes_list', :method => :get) %>
+<% end %>

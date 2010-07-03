@@ -1,0 +1,36 @@
+/*FORMS*/
+.form{ float:left; width:100%; position:relative; z-index:2;}
+.form-column{ float:left;}
+.spark-adv-control, .form li{ float:left; width:350px; vertical-align:baseline; margin:0 20px 20px 0; position:relative; display:block; *display:inline;}
+.form li.clear{ float:none; width:0; height:0; overflow:hidden; margin:0; *display:inline;}
+.form li.reset{ float:none; width:auto; height:auto; margin:0; clear:left; position:static;}
+.spark-adv-control small, .form small, p.inline-hints{ font-size:11px; color:#999; line-height:14px; margin-top:5px; margin-bottom:0; display:block;}
+.spark-adv-control .help, .form .help{ background-color:#ffd; font-size:11px; line-height:15px; border:1px solid #dda; padding:4px; position:absolute; top:20px; left:0;}
+.form li.hidden{ margin:0;}
+
+.form li.autoz{ z-index:13;}
+div.auto_complete ul li{ float:none; width:auto; border:1px solid #eea; border-top:none; display:block; position:static;}
+
+.spark-adv-control label, .form label, #feedback label{ font:bold 13px Arial, Helvetica, sans-serif; color:#555; margin-bottom:5px; display:block;}
+input.text, textarea{ background:#fafafa; width:340px; font:14px Arial, Helvetica, sans-serif; color:#555; border:1px solid #ddd; padding:5px 4px;}
+input.number{ width:40px;}
+select{ width:180px; font:14px Arial, Helvetica, sans-serif; color:#555;}
+hr, .form li.hr{ width:auto; border:none; border-top:1px dashed #dadada; margin:0 -19px 20px; display:block; clear:both;}
+
+input.no3{ width:30px;}
+
+#status_filter{ margin-bottom:15px;}
+#status_filter li{ display:inline;}
+#status_filter label{ background:url(../images/icons/new.png) left center no-repeat; font-style:italic; font-size:11px; text-transform:capitalize; padding-left:15px; margin-left:-5px;}
+#r_script_source_code{width:710px;}
+
+/**/
+div.notice, .errorExplanation{ background:url(/images/icons/success.png) 6px 6px no-repeat #E5F2E5; font-size:12px; color:#6B8F24; border:1px solid #CCE7CC; padding:7px 38px 7px 30px; position:relative; margin-bottom:15px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+div.notice a.notice-close{ font-weight:normal; font-size:11px; color:#555; display:inline-block; position:absolute; top:6px; right:5px;}
+.errorExplanation h2{ font-size:15px; color:#333;}
+div.notice p, .errorExplanation p{ font-weight:bold; line-height:14px; padding-right:30px; margin-bottom:10px;}
+div.notice ul, .errorExplanation ul{ font-size:11px; line-height:17px; margin-bottom:5px;}
+div.notice li, .errorExplanation li{ list-style:inside disc; color:#333; padding-left:10px;}
+div#error, div#success, #errorExplanation{ display:block;}
+div#error, #errorExplanation{ background-image:url(/images/icons/error.png); background-color:#FBE8E7; color:#b71700; border-color:#F7D3D0;}
+div#notification{ background-image:url(/images/icons/warning.png); background-color:#ffc; color:#333; border-color:#eea;}

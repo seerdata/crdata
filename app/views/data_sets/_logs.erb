@@ -1,0 +1,112 @@
+<br />
+<h3>Selected dataset details</h3>
+
+<%= content_tag(:p, data_set.description.blank? ? 'No description for this dataset.' : data_set.description) %>
+
+<% content_tag(:p) do %>
+    <em class="fade">Tags:</em>
+    <% data_set.tag_list.each do |tag_name| %>
+      <%= link_to_remote(tag_name, :url => get_selected_data_sets_path(:type => 'tag', :id => tag_name)) %> 
+    <% end %>
+<% end unless data_set.tag_list.blank? %>
+  
+<% content_tag(:div, :class => 'history_col') do %>
+  <%= content_tag(:h4, 'History:') %>
+  <% content_tag(:table, :class => 'sdt') do %>
+    <% content_tag(:thead) do %>
+      <% content_tag(:tr) do %>
+        <%= content_tag(:th, link_to('When')) %>
+        <%= content_tag(:th, link_to('Who')) %>
+        <%= content_tag(:th, link_to('JobName')) %>
+        <%= content_tag(:th, link_to('Time')) %>
+        <%= content_tag(:th, link_to('Status')) %>
+      <% end %>
+    <% end %>
+    <% content_tag(:tbody) do %>
+      <% logs.each do |log| %>
+        <% content_tag(:tr) do %>
+          <%= content_tag(:td, log.created_at) %>
+          <%= content_tag(:td, (log.user) ? log.user.name : '') %>
+          <%= content_tag(:td, (log.job) ? log.job.description : '') %>
+          <%= content_tag(:td, (log.job) ? get_running_time(log.job) : '') %>
+          <%= content_tag(:td, (log.job) ? get_status(log.job) : log.action.name.capitalize) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= will_paginate(logs, :id => 'ajax', :params => {:controller => 'data_sets', :action => 'get_logs', :id => data_set.id}) if logs %>
+  <br /><br />
+<% end unless data_set.logs.blank? %>
+ 
+<% content_tag(:div, :class => 'ratings_col') do %>
+  <% DATASET_DIMENSIONS.each_pair do |dimension, title| %>
+    <% content_tag(:div, :id => dimension, :class => 'dimension') do %>
+      <%= content_tag(:h4, title) %>
+      <%= ratings_for(data_set, :dimension => dimension, :force_static => true, :wrap => false) %>
+      <%= content_tag(:p, "Avg. rating - #{data_set.total_rates(dimension)} votes") %>
+      <ul class="rating_charts">
+      <% RATING_STARS.downto(1) do |star| %>
+        <%= content_tag(:li, "
+        #{(data_set.stars_rates(star, dimension).size == 0) ? "#{star} star" : link_to("#{star} star", votes_data_set_path(data_set, :stars => star, :dimension => dimension)) + link_to("", votes_data_set_path(data_set, :stars => star, :dimension => dimension), :class => "bar_link")}:
+        <span class=\"bar\"><span style=\"width:#{(data_set.total_rates(dimension) == 0) ? 0 : data_set.stars_rates(star, dimension).size*50/data_set.total_rates(dimension)}px\"></span></span>
+        <span class=\"votes\">(#{data_set.stars_rates(star, dimension).size})</span>") %>
+      <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+  
+  <% content_tag(:div) do %>
+    <%= clear %><br />
+    <%= link_to('+ Rate this dataset', '#', :id => 'show_rate_link', :onclick => "$('show_rate_link').hide(); $('own_rate').show(); Event.stop(event)") %>
+    <% content_tag(:div, :id => 'own_rate', :style => 'display:none') do %>
+      <hr size="0" />
+      <div class="left_rating"><h3>Ratings by you:</h3>
+      <% DATASET_DIMENSIONS.each_pair do |dimension, title| %>
+        <%= title %>: <%= ratings_for(data_set, current_user, :dimension => dimension, :show_user_rating => true, :remote_options => {:url => rate_data_set_path(data_set)}) %>
+      <% end %></div>
+      <% if comment = data_set.comments.find_by_user_id(current_user.id) %>
+        <%= render(:partial => 'comments/comment', :locals => {:comment => comment}) %>
+      <% else %>
+        <%= render(:partial => 'comments/form', :locals => {:comment => data_set.comments.build(:user_id => current_user.id)}) %> 
+      <% end  %>
+      <%= clear %><br />
+      <%= link_to('- Hide rate', '#', :id => 'hide_rate_link', :onclick => "$('own_rate').hide(); $('show_rate_link').show(); Event.stop(event)") %>
+    <% end %>
+  <% end if current_user %>
+  
+<% end %>
+<% semantic_form_remote_for(data_set, :url => save_aws_key_data_set_path(data_set)) do |form| %>
+	<%= clear %><br />
+	<hr size="0" />
+  <%= content_tag(:h3, 'In order to use this dataset you must provide AWS credentials') %>
+	<ul class="form">
+		<li>
+  <%= form.input(:aws_key, :collection => current_user.aws_keys.collect{|aws_key| [aws_key.name, aws_key.id]} << ['(new key)', 0], :include_blank => false, :label => 'AWS Key', :input_html => { :class => 'text'}) %></li>
+  <%= clear(:li) %>
+  <% content_tag(:li, :id => 'aws_credentials', :style => (data_set.aws_key or (data_set.aws_key_id.blank? and !current_user.aws_keys.size.zero?)) ? 'display: none' : '') do %>
+    <% content_tag(:ul) do %>
+      <% content_tag(:li, :class => 'spark-adv-control') do %>
+        <%= label_tag('aws_credentials[access_key_id]', 'Access Key Id') %>
+        <%= text_field_tag('aws_credentials[access_key_id]', (params[:aws_credentials]) ? params[:aws_credentials][:access_key_id] : '', :class => 'text') %>
+      <% end -%>
+      <% content_tag(:li, :class => 'spark-adv-control') do %>		
+        <%= label_tag('aws_credentials[secret_access_key]', 'Secret Access Key') %>
+        <%= text_field_tag('aws_credentials[secret_access_key]', (params[:aws_credentials]) ? params[:aws_credentials][:secret_access_key] : '',  :class => 'text') %>
+      <% end -%>
+    <% end -%>
+  <% end -%></ul>
+  <% form.buttons do %>
+    <%= form.commit_button(:label => 'Save AWS Key') %>
+  <% end %>
+  <% javascript_tag do %>
+    $('data_set_aws_key_id').observe('change', function() {
+      if (this.value == '0') {
+        $('aws_credentials').show();
+      } else {
+        $('aws_credentials').hide();
+      }
+    });
+  <% end %>
+    <%= clear %><br />
+	<hr size="0" />
+<% end unless session[:r_script_id].blank? or data_set.is_public or data_set.aws_key or (data_set.bucket != MAIN_BUCKET) %>

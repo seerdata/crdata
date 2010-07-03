@@ -1,0 +1,3 @@
+host:
+  hostname: crdata.org
+  worker_image: ami-b216fedb  

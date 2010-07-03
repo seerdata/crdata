@@ -1,0 +1,15 @@
+<div id="header"><div class="inside">
+	<%= link_to(content_tag(:span, 'CRdata.org'), root_path, :id => 'logo') %>
+	<ul>
+		<li><%= link_to('R Script Dev Guide', devguide_path, :target => 'help') %></li>
+		<li><%= link_to('User Guide', userguide_path, :target => 'help') %></li>
+  <% if !current_user %>
+    <li><%= link_to "Register", new_account_path %></li>
+    <li><%= link_to "Log In", new_user_session_path %></li>
+  <% else %>
+    <%= content_tag(:li, link_to("Site Management", users_path)) if current_user && current_user.is_site_admin? %>
+    <li><%= link_to "My Account", account_path %></li>
+    <li><%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %></li>
+  <% end %>
+		</ul>
+</div></div>

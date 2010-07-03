@@ -1,0 +1,20 @@
+<ul class="form">
+  <%= form.input(:name, :input_html => { :class => 'text'}) %>
+  <%= clear(:li) %>
+  <%= form.input(:description, :input_html => {:rows => '7'}) %>
+  <%= clear(:li) %>
+  <%= form.input(:show_members) %>
+  <%= clear(:li) %>
+  <li id="help_link" class="spark-adv-control">
+    <br />
+    <%= content_tag(:strong, "Do you want to provide a #{link_to('small tooltip', '#', {:id => 'show_tooltip_link'})} or a #{link_to('full help page', '#', {:id => 'show_help_page_link'})}?") %>
+  </li>
+  <%= clear(:li) %>
+  
+  <li id="help_text" style="display:none;"><ul>
+    <%= form.input(:read_me, :input_html => {:rows => '7', :class => 'mceEditor'}) %></ul><br />
+    <%= 'or ' + link_to('remove the text', '#', {:id => 'hide_help_text_link'}) %>
+  </li>
+  <%= clear(:li) %>
+
+</ul>

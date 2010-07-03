@@ -1,0 +1,26 @@
+<% content_for(:intro) do %>
+	<h1>Login</h1>
+	<p class="solo">Registered users can store their data and R scripts privately on CRdata. They can also purchase additional computing resources on the Amazon cloud to speed up their large-scale data processing needs.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <h2>Login</h2>
+   
+	<% semantic_form_for(@user_session, :url => user_session_path) do |form| %>
+		<%= form.error_messages %>
+		<ul class="form">
+			<%= form.input(:email, :input_html => { :class => 'text'}) %>
+			<%= form.input(:password, :as => :password, :input_html => { :class => 'text'}) %>
+			<%= clear(:li) %>
+			<%= form.input(:remember_me, :as => :boolean) %>
+			<%= content_tag(:li, link_to('Forgot password?', new_password_reset_path)) %>
+			<%= clear(:li) %>
+		</ul>
+		<% form.buttons do %>
+			<%= form.commit_button(:label => 'Login') %>
+		<% end %>
+  <% end %>
+  <%= clear %>
+  <br /><br />
+  <p><%= link_to("Don't have an account? <strong>Join now!</strong>", new_account_path) %></p>
+<% end %>

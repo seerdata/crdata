@@ -1,0 +1,9 @@
+if @success
+  if params[:job]  
+    page << "$('job_job_parameters_attributes_#{params[:index]}_data_set_id').options.add(new Option('#{@data_set.name}', '#{@data_set.id}', true)); $('data_set_form').style.visibility = 'hidden';"
+  else
+    page.redirect_to(data_sets_path)
+  end
+else
+  @data_set.errors.each{|attr, msg| page.insert_html(:bottom, (attr == 'bucket') ? 's3_credentials' : "data_set_#{attr}_input", "<p class='inline-errors'>#{msg}</p>") } 
+end

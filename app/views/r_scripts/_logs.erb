@@ -1,0 +1,77 @@
+<br />
+<h3>Selected script details</h3>
+
+<%= content_tag(:p, r_script.description.blank? ? 'No description for this script.' : r_script.description) %>
+
+<% content_tag(:p) do %>
+    <em class="fade">Tags:</em>
+    <% r_script.tag_list.each do |tag_name| %>
+      <%= link_to_remote(tag_name, :url => get_selected_r_scripts_path(:type => 'tag', :id => tag_name)) %>
+    <% end %>
+<% end unless r_script.tag_list.blank? %>
+
+<% content_tag(:div, :class => 'history_col') do %>
+<%= content_tag(:h4, 'History:') %>
+<% content_tag(:table, :class => 'sdt') do %>
+  <% content_tag(:thead) do %>
+    <% content_tag(:tr) do %>
+      <%= content_tag(:th, link_to('When')) %>
+      <%= content_tag(:th, link_to('Who')) %>
+      <%= content_tag(:th, link_to('JobName')) %>
+      <%= content_tag(:th, link_to('Time')) %>
+      <%= content_tag(:th, link_to('Status')) %>
+    <% end %>
+  <% end %>
+  <% content_tag(:tbody) do %>
+    <% logs.each do |log| %>
+      <% content_tag(:tr) do %>
+        <%= content_tag(:td, log.created_at) %>
+        <%= content_tag(:td, (log.user) ? log.user.name : '') %>
+        <%= content_tag(:td, (log.job) ? log.job.description : '') %>
+        <%= content_tag(:td, (log.job) ? get_running_time(log.job) : '') %>
+        <%= content_tag(:td, (log.job) ? get_status(log.job) : log.action.name.capitalize) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+<%= will_paginate(logs, :id => 'ajax', :params => {:controller => 'r_scripts', :action => 'get_logs', :id => r_script.id}) if logs %>
+<br /><br />
+<% end unless r_script.logs.blank? %>
+
+<% content_tag(:div, :class => 'ratings_col') do %>
+  <% R_SCRIPT_DIMENSIONS.each_pair do |dimension, title| %>
+    <% content_tag(:div, :id => dimension, :class => 'dimension') do %>
+      <%= content_tag(:h4, title) %>
+      <%= ratings_for(r_script, :dimension => dimension, :force_static => true, :wrap => false) %>
+      <%= content_tag(:p, "Avg. rating - #{r_script.total_rates(dimension)} votes") %>
+      <ul class="rating_charts">
+      <% RATING_STARS.downto(1) do |star| %>
+        <%= content_tag(:li, "
+        #{(r_script.stars_rates(star, dimension).size == 0) ? "#{star} star" : link_to("#{star} star", votes_r_script_path(r_script, :stars => star, :dimension => dimension)) + link_to("", votes_r_script_path(r_script, :stars => star, :dimension => dimension), :class => "bar_link")}:
+        <span class=\"bar\"><span style=\"width:#{(r_script.total_rates(dimension) == 0) ? 0 : r_script.stars_rates(star, dimension).size*50/r_script.total_rates(dimension)}px\"></span></span>
+        <span class=\"votes\">(#{r_script.stars_rates(star, dimension).size})</span>") %>
+      <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+  
+  <% content_tag(:div) do %>
+    <%= clear %><br />
+    <%= link_to('+ Rate this script', '#', :id => 'show_rate_link', :onclick => "$('show_rate_link').hide(); $('own_rate').show(); Event.stop(event)") %>
+    <% content_tag(:div, :id => 'own_rate', :style => 'display:none') do %>
+      <hr size="0" />
+      <div class="left_rating"><h3>Ratings by you:</h3>
+      <% R_SCRIPT_DIMENSIONS.each_pair do |dimension, title| %>
+        <%= title %>: <%= ratings_for(r_script, current_user, :dimension => dimension, :show_user_rating => true, :remote_options => {:url => rate_r_script_path(r_script)}) %>
+      <% end %></div>
+      <% if comment = r_script.comments.find_by_user_id(current_user.id) %>
+        <%= render(:partial => 'comments/comment', :locals => {:comment => comment}) %>
+      <% else %>
+        <%= render(:partial => 'comments/form', :locals => {:comment => r_script.comments.build(:user_id => current_user.id)}) %> 
+      <% end  %>
+      <%= clear %><br />
+      <%= link_to('- Hide rate', '#', :id => 'hide_rate_link', :onclick => "$('own_rate').hide(); $('show_rate_link').show(); Event.stop(event)") %>
+    <% end %>
+  <% end if current_user %>
+  
+<% end %>

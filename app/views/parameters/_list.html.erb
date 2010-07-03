@@ -1,0 +1,23 @@
+<% content_tag(:div, :id => 'parameters_list') do %>
+	<h3>Parameters list</h3>	
+    <% content_tag(:table, :class => 'sdt') do %>
+      <% content_tag(:thead) do %>
+        <% content_tag(:tr) do %>
+          <%= content_tag(:th, 'Name', :class => 'column-head') %>
+          <%= content_tag(:th, 'Actions', :class => 'column-head') %>
+        <% end %>
+      <% end %>
+      <% content_tag(:tbody) do %>
+        <% unless parameter_ids.blank?  %>
+          <% parameter_ids.each do |id| %>
+            <% content_tag(:tr) do %>
+              <td><% parameter = Parameter.find(id) %><%= parameter.name %></td>
+              <td class="actions"><%= link_to_remote('Delete', :url => parameter, :method => :delete, :update => 'parameters_list', :confirm => 'Are you sure you want to delete this parameter?') if parameter %></td>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= content_tag(:tr, "<td colspan='2' class='no_content'>No parameters.</td>") %>
+        <% end -%>
+      <% end -%>
+    <% end -%>
+<% end %>

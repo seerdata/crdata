@@ -1,0 +1,7 @@
+<% content_tag(:div, :class => 'comment_form', :id => "comment_#{comment.id}") do %>
+  <p><span class="fade">Comment:</span><br/>
+  <%= content_tag(:strong, comment.title) %></p>
+  <%= content_tag(:p, comment.comment) %> 
+
+  <%= link_to_remote('Edit', :url => edit_comment_path(comment), :method => :get) if comment.user == current_user %>
+<% end %>

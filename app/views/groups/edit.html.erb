@@ -1,0 +1,35 @@
+<% content_for(:head) do %>
+  <%= include_tiny_mce_if_needed %>
+<% end -%>
+
+<% content_for(:intro) do %>
+	<h1>Mange Groups</h1>
+	<p class="solo">Use the interactive interface below to manage your Groups.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>Edit Group Properties</h2>
+	<% semantic_form_for(@group) do |form| %>
+		<%= render(:partial => 'form', :use_full_path => true, :locals => {:form => form}) %>
+    <% form.buttons do %>
+      <%= form.commit_button %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', (current_user and current_user.is_site_admin? and current_user != @group.users.owners.first) ? by_user_groups_path(:user_id => @group.users.owners.first.id) : groups_path) %></span>
+  <% end %>
+   
+  <% content_tag(:div) do %><hr size="0" />
+  <h3>Members:</h3>
+  <% content_tag(:ol, :class => 'decimal_li') do %>
+    <% @group.users.approved.each do |user| %> 
+      <% content_tag(:li) do %>
+        <%= user.name %>
+        <% if @group.users.admins.include?(current_user) %> 
+          <%= link_to('Cancel membershp', remove_group_user_path(GroupUser.first(:conditions => ['user_id = ? AND group_id = ?', user.id, @group.id])), :confirm => 'Are you sure you want to cancel this user membership?', :class => 'admin_action') %>
+          <%= link_to('Make admin', change_role_group_user_path(GroupUser.first(:conditions => ['user_id = ? AND group_id = ?', user.id, @group.id]), :role_id => Role.find_by_name('Admin')), :confirm => 'Are you sure you want to make this user a group administrator?', :class => 'admin_action') unless @group.users.admins.include?(user) %>
+          <%= link_to('Make user', change_role_group_user_path(GroupUser.first(:conditions => ['user_id = ? AND group_id = ?', user.id, @group.id]), :role_id => Role.find_by_name('User')), :confirm => 'Are you sure you want to make this administrator a regular user?', :class => 'admin_action') if @group.users.admins.include?(user) and  !@group.users.owners.include?(user) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %><% end if !@group.users.approved.blank? %>
+	<%= javascript_include_tag('groups/new') %>
+<% end -%>

@@ -1,0 +1,12 @@
+<% content_for(:intro) do %>
+	<h1>Mange Membership</h1>
+	<p class="solo">Use the interactive interface below to manage your Groups.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <h2>Edit membership</h2>
+  <%= content_tag(:p, "#{@group_user.user.name} has requested to join #{@group_user.group.name}") %>
+  <%= link_to('Approve membershp', approve_group_user_path(@group_user)) %>
+  <%= link_to('Reject membershp', reject_group_user_path(@group_user)) %>
+  <%= link_to('Cancel', @group_user.group) %>
+<% end -%>

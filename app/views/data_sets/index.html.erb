@@ -1,0 +1,45 @@
+<% content_for(:head) do %>
+  <%= ajaxful_rating_style %>
+<% end -%>
+
+<% content_for(:intro) do %>
+	<h1>Manage Data</h1>
+	<p class="solo">Use the interactive interface below to manage your data.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <% content_tag(:div, :class => 'relative') do %>
+    <% content_tag(:div, :id => 'search_form') do %>
+      <% form_remote_tag(:url => get_selected_data_sets_path(:type => 'search')) do %>
+        <%= text_field_tag(:id,
+              params[:id] || 'search datasets', 
+              :class => 'text', 
+              :onfocus => %Q(if (this.value == 'search datasets') { this.value = '' }; this.style.color = '#555555';),
+              :onblur  => %Q(if (this.value == '') { this.value = 'search datasets' }; this.style.color = '#aaaaaa';)) %>
+        <%= submit_tag(:search, :class => 'search_submit') %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% content_tag(:div, :class => 'rel') do %>
+    <% content_tag(:ul, :class => 'header_actions') do %>
+      <%= content_tag(:li, link_to('Add Dataset', new_data_set_path, {}, {:class => 'header_actions'})) %>
+    <% end %>
+  <% end %>
+  <% content_tag(:div, :class => 'wizard_sidebar') do %>
+    <%= content_tag(:h3, 'Dataset type:') %>
+    <% content_tag(:ul) do %>
+      <%= content_tag(:li, link_to_remote('Public', :url => get_selected_data_sets_path(:type => 'public')), :id => 'public', :class => (params[:type] == 'public') ? 'current' : '') unless DataSet.count_public.zero? %>
+      <%= content_tag(:li, link_to_remote('My Private Files', :url => get_selected_data_sets_path(:type => 'private')), :id => 'private', :class => (params[:type] == 'private') ? 'current' : '') if current_user and !current_user.groups.default.first.count_data_sets.zero? %>
+      <% current_user.groups.not_default.each do |group| %>
+        <%= content_tag(:li, link_to_remote(group.name, :url => get_selected_data_sets_path(:type => 'group', :id => group.id)), :id => group.id, :class => (params[:type] == group.id) ? 'current' : '') unless group.count_data_sets.zero? %>
+      <% end if current_user %>
+      <%= content_tag(:li, link_to_remote('All', :url => get_selected_data_sets_path(:type => 'all')), :id => 'all', :class => (params[:type] == 'all') ? 'current' : '') if current_user %>
+    <% end %>
+    <%= render :partial => 'data_sets/tags', :locals => {:tags => @tags} %>
+  <% end %>
+  <%= render :partial => 'data_sets/selected' %>
+  <%= clear %>
+  <%= content_tag(:span, '', :id => 'next_step', :style => 'display:none') %>
+  <%= javascript_include_tag('select') %>
+<% end -%>
+

@@ -1,0 +1,7 @@
+<% content_tag(:div, :id => 'tags') do %>
+  <%= content_tag(:h3, 'Tag cloud') %>
+  <% tag_cloud(tags, %w(css_class1 css_class2 css_class3 css_class4 css_class5)) do |tag, css_class| %>
+    <%= link_to_remote(tag.name, :url => get_selected_r_scripts_path(:type => 'tag', :id => tag.name), :html => {:class => css_class}) %>
+  <% end %>
+<% end unless tags.blank? -%>
+

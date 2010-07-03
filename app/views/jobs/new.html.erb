@@ -1,0 +1,60 @@
+<% content_for(:head) do %>
+  <%= javascript_include_tag :defaults %>
+   <%= javascript_include_tag :swf_upload %>
+ <% end -%>
+
+<% content_for(:intro) do %>
+	<h1>Manage Jobs</h1>
+	<p class="solo">Use the interactive interface below to manage your analysis runs.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>New Job</h2>
+
+  <!--[if IE 8]>
+  <style type="text/css">
+    #jobs-new #page .inside, #jobs-new .content, #jobs-new .form, #jobs-new .form li{ position:static;}
+  </style>
+  <![endif]-->
+  
+  <% semantic_form_for(@job) do |form| %>
+    <% content_tag(:ul, :class => 'form') do %>
+      <li class="autoz"><%= form.label "Choose Script To Run" %>
+      <%= text_field_with_auto_complete(:j, :r_script, 
+          {:autocomplete => "off", 
+           :value => @job.r_script ? @job.r_script.name : '', 
+           :note => "Type at least 3 chars and select a name from the list", :class => 'text'}, 
+           {:after_update_element => "function (element, value) { $('job_r_script_id').value = value.value}", :min_chars => 3}) %>
+      <p class="inline-hints">Type at least 3 chars and select a name from the list</p>
+      <%= form.hidden_field :r_script_id %></li>
+      <li class="spark-adv-control" id="help_link">
+        <%= content_tag(:strong, (@job.r_script and @job.r_script.description.include?('<p>')) ? link_to('Help with chosen script...', help_page_r_script_path(@job.r_script), {:id => 'show_help_link', :target => :blank}) : link_to('Help with chosen script...', '#', {:onclick => 'show_help_link(event)'})) %>
+      </li>
+      <li class="spark-adv-control" id="help_text" style="display: none">
+        <%= content_tag(:strong, link_to('Hide help', '#', {:id => 'hide_help_link'})) %>
+        <div class="help"><strong>Description.</strong><br />
+          <span id="r_script_description"><%= (@job.r_script.nil? || @job.r_script.description.blank? ) ? 'The author of this script has not provided any associated help text.' : simple_format(@job.r_script.description) %></span>
+        </div>
+      </li>
+      <%= clear(:li) %>
+      <%= form.input(:description, :label => 'Name your job',  :input_html => { :class => 'text'}) %>
+      <%= clear(:li) %>
+      <%= form.input(:jobs_queue, :collection => (current_user) ? mark_paused_jobs_queues(current_user.jobs_queues) : mark_paused_jobs_queues(JobsQueue.public_jobs_queues), :label => 'Choose Jobs Queue', :input_html => { :class => 'text'}) %>
+      <%= clear(:li) %>
+      <% content_tag(:li, :id => 'job_data') do %>
+        <%= render :partial => 'r_scripts/data_form', :locals => {:r_script => @job.r_script} if  @job.r_script %>
+      <% end -%>
+      <%= clear(:li) %>
+    <% end -%>
+    <% form.buttons do %>
+      <%= form.commit_button %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', jobs_path) %></span>
+  <% end %>
+  <%= clear %><br />
+  <% content_tag(:div, :id => 'data_set_form', :style => "visibility:hidden;") do %>
+    <%= render(:partial => 'data_sets/form') %>
+  <% end %>
+	<%= javascript_include_tag('jobs/new') %>
+  <%= observe_field :job_r_script_id, :url => get_data_form_r_scripts_path,  :with => "'id=' + $('job_r_script_id').value", :frequency => 0.5 %>
+<% end %>

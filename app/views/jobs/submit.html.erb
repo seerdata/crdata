@@ -1,0 +1,19 @@
+<% content_for(:intro) do %>
+	<h1>Manage Jobs</h1>
+	<p class="solo">Use the interactive interface below to manage your analysis runs.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>Submit Job</h2>
+
+  <% semantic_form_for(@job, :url => do_submit_job_path(@job)) do |form| %>
+    <% content_tag(:ul, :class => 'form') do %>
+      <%= form.input(:jobs_queue, :collection => (current_user) ? mark_paused_jobs_queues(current_user.jobs_queues) : mark_paused_jobs_queues(JobsQueue.public_jobs_queues), :label => 'Choose Jobs Queue', :input_html => { :class => 'text'}) %>
+      <%= clear(:li) %>
+    <% end -%>
+    <% form.buttons do %>
+      <%= form.commit_button %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', jobs_path) %></span>
+  <% end %>
+<% end %>

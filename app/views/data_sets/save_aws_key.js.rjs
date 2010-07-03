@@ -1,0 +1,5 @@
+if @success
+  page.replace("edit_data_set_#{@data_set.id}", :text => 'AWS Key was saved')
+else
+  @data_set.errors.each{|attr, msg| page.insert_html(:bottom, "data_set_#{attr}_input", "<p class='inline-errors'>#{msg}</p>") } 
+end

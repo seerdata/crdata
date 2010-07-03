@@ -1,0 +1,39 @@
+<% content_for(:intro) do %>
+  <h1>Site Management</h1>
+  <p class="solo">Use the interactive interface below to manage CRData site.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <% content_tag(:div, :class => 'table') do %>
+
+    <% content_tag(:div, :class => 'rel') do %>
+      <% content_tag(:ul, :class => 'header_actions') do %>
+        <%= content_tag(:li, link_to("Add announcement", new_announcement_path)) %>
+      <% end %>
+    <% end %>
+
+    <h3>Manage: <%= link_to('Users', users_path) %> <span>|||</span> Announcements</h3>
+    <table class="sdt">
+      <% if !@announcements.blank? %>
+
+        <thead>
+        <th><%= link_to('Notification text', announcements_path(:sort => get_column_sort_criteria('text'))) %></th>
+        <th><%= link_to('Created at', announcements_path(:sort => get_column_sort_criteria('date'))) %></th>
+        <th><%= "Actions" %></th>
+      </thead>
+      <tbody>
+
+        <%= render :partial => "announcement", :collection => @announcements %>
+
+      </tbody>
+    <% else %>
+      <%= no_content('No announcements found.') %>
+    <% end -%>
+    </table>
+    <%= will_paginate(@announcements) %>
+
+  <% end -%>
+<% end -%>
+<% if @announcements.blank? %>
+<% else %>
+<% end -%>

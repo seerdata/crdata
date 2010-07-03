@@ -1,0 +1,15 @@
+<% content_for(:intro) do %>
+	<h1>Activate account</h1>
+	<p class="solo">Use the interactive interface below to manage your account</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <%= content_tag(:h1, 'Activate your account') %>
+
+  <% semantic_form_for(@user, :url => activate_path(@user.id), :html => { :method => :post }) do |form| %>
+    <%= form.error_messages %>
+    <% form.buttons do %>
+      <%= form.commit_button(:label => 'Activate') %>
+    <% end %>
+  <% end %>
+<% end %>

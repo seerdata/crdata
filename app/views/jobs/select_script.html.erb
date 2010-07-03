@@ -1,0 +1,48 @@
+<% content_for(:head) do %>
+  <%= ajaxful_rating_style %>
+ <% end -%>
+
+<% content_for(:intro) do %>
+	<h1>Manage Jobs</h1>
+	<p class="solo">Use the interactive interface below to manage your analysis runs.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <% content_tag(:span, :class => 'spark-adv-submit', :style => 'float:right;') do %>
+    <%= link_to('Next Step', (@r_scripts.first.has_data_set_parameters? ? new_job_select_data_set_path(:r_script_id => @r_scripts.first.id) : new_job_set_information_path(:r_script_id => @r_scripts.first.id)), :id => 'next_step') %>
+  <% end unless @r_scripts.blank? %>
+	
+  <%= content_tag(:h2, "New Job - Step 1 from #{@r_scripts.blank? ? '1' : @r_scripts.first.count_steps} (script selection)", :id => 'section_title') %>
+  <br /><br /><br />
+  <% content_tag(:div, :class => 'relative') do %>
+    <% content_tag(:div, :id => 'search_form') do %>
+      <% form_remote_tag(:url => get_selected_r_scripts_path(:type => 'search')) do %>
+        <%= text_field_tag(:id,
+              params[:id] || 'search scripts', 
+              :class => 'text', 
+              :onfocus => %Q(if (this.value == 'search scripts') { this.value = '' }; this.style.color = '#555555';),
+              :onblur  => %Q(if (this.value == '') { this.value = 'search scripts' }; this.style.color = '#aaaaaa';)) %>
+        <%= submit_tag(:search, :class => 'search_submit') %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% content_tag(:div, :class => 'wizard_sidebar') do %>
+    <%= content_tag(:h3, 'Script type:') %>
+    <% content_tag(:ul) do %>
+      <%= content_tag(:li, link_to_remote('Public', :url => get_selected_r_scripts_path(:type => 'public')), :id => 'public', :class => (params[:type] == 'public') ? 'current' : '') unless RScript.count_public.zero? %>
+      <%= content_tag(:li, link_to_remote('My Private Files', :url => get_selected_r_scripts_path(:type => 'private')), :id => 'private', :class => (params[:type] == 'private') ? 'current' : '') if current_user and !current_user.groups.default.first.count_r_scripts.zero? %>
+      <% current_user.groups.not_default.each do |group| %>
+        <%= content_tag(:li, link_to_remote(group.name, :url => get_selected_r_scripts_path(:type => 'group', :id => group.id)), :id => group.id, :class => (params[:type] == group.id) ? 'current' : '') unless group.count_r_scripts.zero? %>
+      <% end if current_user %>
+      <%= content_tag(:li, link_to_remote('All', :url => get_selected_r_scripts_path(:type => 'all')), :id => 'all', :class => (params[:type] == 'all') ? 'current' : '') if current_user %>
+    <% end %>
+    <%= render :partial => 'r_scripts/tags', :locals => {:tags => @tags} %>
+  <% end %>
+  <%= render :partial => 'r_scripts/selected' %>
+  <%= clear %>
+  <br />
+  <%= link_to('&laquo; cancel and go back', jobs_path) %>
+  <%= clear %>
+  <%= javascript_include_tag('select') %>
+<% end -%>
+

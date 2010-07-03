@@ -1,0 +1,15 @@
+<% content_for(:intro) do %>
+	<h1>Edit Registration</h1>
+	<p class="solo">Registered users can store their data and R scripts privately on CRdata. They can also purchase additional computing resources on the Amazon cloud to speed up their large-scale data processing needs.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>My account</h2>
+	<% semantic_form_for(@user) do |form| %>
+		<%= render(:partial => 'form', :use_full_path => true, :locals => {:form => form}) %>
+    <% form.buttons do %>
+      <%= form.commit_button %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', account_path) %></span>
+  <% end %>
+<% end -%>

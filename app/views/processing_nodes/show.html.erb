@@ -1,0 +1,23 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Processing Nodes') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your Processing Nodes.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <h2>
+    <span>IP Address:</span>
+    <%=h @processing_node.ip_address %>
+  </h2>
+  <h2>
+    <span>Node Identifier:</span>
+    <%=h @processing_node.node_identifier %>
+  </h2>
+
+ <h2>
+    <span>Queue:</span>
+    <%=h @processing_node.jobs_queue.name %>
+  </h2>
+  
+  <hr size="0" />  
+  <%= link_to 'Back', processing_nodes_path %>
+<% end %>

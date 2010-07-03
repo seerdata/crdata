@@ -1,0 +1,38 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Jobs') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your analysis runs.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <% content_tag(:div, :class => 'table') do %>
+    <% form_tag(jobs_path, :method => :get, :id => 'status_filter_form') do %>
+      <%= hidden_field_tag(:sort, params[:sort]) if params[:sort] %>
+      <%= hidden_field_tag(:show, params[:show]) if params[:show] %>
+      <% content_tag(:ul, :id => 'status_filter') do %>
+        <% JOB_STATUSES.each do |status| %>
+          <% content_tag(:li) do %> 
+            <%= check_box_tag("statuses[#{status}]", 1, get_status_filter_check(status)) %>
+            <%= label_tag("statuses_#{status}", status, :style => "background-image:url(../images/icons/#{status}.png)") %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% form_tag(destroy_all_jobs_path(:statuses => params[:statuses], :show => params[:show], :sort => params[:sort]), :id => :select_form, :method => :delete) do %>
+      <% content_tag(:div, :id => 'jobs_list') do %>
+        <%= render :partial => 'list', :locals => { :jobs => Job.get_jobs(current_user, params) } %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% content_tag(:div, :id => 'feedback', :style => 'display: none') do %>
+    <% form_remote_tag(:url => send_feedback_jobs_path, :html => {:id => 'feedback_form'}) do %>
+      <%= link_to('x', 'javascript:', :title =>'Close', :class => 'overlay_close', :onclick => "$('feedback').hide();") %>
+      <%= content_tag(:h3, 'Feedback') %>
+      <%= label_tag(:message) %>
+      <%= text_area_tag(:message) %>
+      <%= hidden_field_tag(:job_id) %>
+      <%= submit_tag(:send, :class => 'feedback_submit') %>
+    <% end %>
+  <% end %>
+  <%= periodically_call_remote(:url => jobs_path(:statuses => params[:statuses], :show => params[:show], :sort => params[:sort]), :frequency => '60', :update => 'jobs_list', :method => :get) %>
+	<%= javascript_include_tag('jobs/index') %>
+<% end %>

@@ -1,0 +1,17 @@
+<% if flash[:notice] %>
+  <% content_tag(:div, :id => 'success', :class => 'notice') do %>
+    <%= link_to('close', 'javascript:', :class => 'notice-close', :onclick => "$('success').remove();")%>
+    <%= flash[:notice] %>
+  <% end %>
+<% elsif flash[:error] %>
+  <% content_tag(:div, :id => 'error', :class => 'notice') do %>
+    <%= link_to('close', 'javascript:', :class => 'notice-close', :onclick => "$('error').remove();")%>
+    <%= flash[:error] %>
+  <% end %>
+<% end %>
+<% if current_user && !current_user.current_notification.blank? %>
+  <% content_tag(:div, :id => 'notification', :class => 'notice') do %>
+        <%= link_to('Acknowledge', remove_notification_user_path(:id => current_user, :notification_id => current_user.current_notification.id), :method => :put, :class => 'notice-close')%>
+    <%= current_user.current_notification.text %>
+  <% end %>
+<% end %>

@@ -1,0 +1,20 @@
+<% content_for(:head) do %>
+  <%= include_tiny_mce_if_needed %>
+<% end -%>
+
+<% content_for(:intro) do %>
+	<h1>Mange Groups</h1>
+	<p class="solo">Use the interactive interface below to manage your Groups.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>New Group</h2>
+	<% semantic_form_for(@group) do |form| %>
+		<%= render(:partial => 'form', :use_full_path => true, :locals => {:form => form}) %>
+    <% form.buttons do %>
+      <%= form.commit_button %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', groups_path) %></span>
+  <% end %>
+	<%= javascript_include_tag('groups/new') %>
+<% end -%>

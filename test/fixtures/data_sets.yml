@@ -1,0 +1,10 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString1
+  description: MyString
+  data_file_name: dataset.txt
+
+two:
+  name: MyString2
+  description: MyString

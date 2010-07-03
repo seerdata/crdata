@@ -1,0 +1,16 @@
+<div class="image">
+	<%= image_tag('_intro.jpg') %>
+</div>
+<div class="copy">
+	<h1>The Better Way to Crunch data</h1>
+	<p class="first bullet less_margin">Use privately, or share data &amp; R scripts</p>
+	<p class="first bullet less_margin">Access the power of R through point &amp; click menus</p>
+	<p class="first bullet">Run your analysis on the Amazon cloud</p>
+	<p style="margin-left:60px">- free for small jobs, or<br />
+		- buy virtually unlimited resources directly from Amazon</p>
+	<br />	
+	
+	<%= content_tag(:span, link_to('Proceed as a guest user', guest_path), :class => 'feat_action') unless action_name == 'guest' || current_user %>
+	<%= content_tag(:span, link_to('Take a Tour', tour_path), :class => 'feat_action_2nd') unless action_name == 'tour' %>
+</div>
+<%= clear %>

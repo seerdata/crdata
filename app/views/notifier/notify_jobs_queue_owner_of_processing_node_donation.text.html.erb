@@ -1,0 +1,5 @@
+<p>
+A processing node was donated by <%= @processing_node.user.name %> for <%= @processing_node.jobs_queue.name %>
+
+You can approve donation <%= link_to('here', manage_donation_processing_node_url(@processing_node)) %>.
+</p>

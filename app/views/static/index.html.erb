@@ -1,0 +1,32 @@
+<% content_for(:intro) do %>
+	<%= render(:partial => 'intro', :use_full_path => true) %>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>CRdata.org</h2>
+	<p>Everyday researchers loose valuable time waiting for computations on their desktops. CRdata.org frees your desktop for other work while our servers analyze your data in 
+  the cloud.  </p>
+  <p>You can use CRdata as a private resource, share your data and R scripts with selected others, or with the whole community</p>
+
+	<ul class="screenshots">
+		<li>
+			<%= image_tag('_shot1.jpg') %>
+		</li>
+		<li>
+			<%= image_tag('_shot2.jpg') %>
+		</li>
+		<li style="margin-right:0;">
+			<%= image_tag('_shot3.jpg') %>
+		</li>
+	</ul>
+	<%= clear %>
+	
+	<p>To ensure, you have access to the latest resources, all R and Bioconductor libraries are updated nightly on CRdata.</p>
+	<hr />
+	<span class="spark-adv-submit" style="float:right; margin-right:0"><%= link_to('Get the source code', 'http://github.com/seerdata/crdata') %></span>
+	<span class="form-cancel" style="float:right; margin-right:10px">
+		<a href="https://docs.google.com/Doc?docid=0Afo75KqrSlLTZGRqOW5iOGpfMzgwZHdjd3g5Z3A&hl=en" target="_blank">Programmer Guide</a>
+	</span>
+	<h3 style="padding-top:6px">CRdata is free &amp; open source</h3>
+	<%= clear %>
+<% end -%>

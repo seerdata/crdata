@@ -1,0 +1,14 @@
+<div class="sidebar">
+  <% menu_items =[
+		['Home', root_path],
+		['R Scripts', r_scripts_path],
+		['Data', data_sets_path],
+		['Queues', jobs_queues_path],
+		['Processing Nodes', processing_nodes_path],
+		['Run analyses', jobs_path],
+		['Groups', groups_path]
+	]
+        #menu_items << ["Users", users_path] if current_user && current_user.is_site_admin?
+      %>
+	<%= menu(menu_items) %>
+</div>

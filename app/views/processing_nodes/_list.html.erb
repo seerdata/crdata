@@ -1,0 +1,41 @@
+<% content_tag(:div, :class => 'rel') do %>
+  <% content_tag(:ul, :class => 'header_actions') do %>
+    <%= content_tag(:li, link_to('Add Node', new_processing_node_path, {}, {:class => 'header_actions'})) unless params[:action] == "by_user" %>
+    <%= content_tag(:li, link_to('Donate Node', new_processing_node_path(:donate => 1), {}, {:class => 'header_actions'})) unless  current_user and current_user.is_site_admin? %>
+    <%= content_tag(:li, link_to('View All', processing_nodes_path(:show => 'all', :sort => params[:sort], :search => params[:search]), {}, {:class => 'header_actions'})) %>
+    <%= content_tag(:li, submit_tag('Delete', :class => 'deleteall_submit', :confirm => 'Are you sure you want to delete selected queues?')) if current_user %>
+  <% end %>
+<% end %>
+<% content_tag(:table, :class => 'sdt') do %>
+  <% if !processing_nodes.blank? %>
+    <% content_tag(:thead) do %>
+      <% content_tag(:tr) do %>
+        <%= content_tag(:th, check_box_tag('processing_nodes', 1, false, :onclick => "toggleCheckBoxes(this)")) if current_user %>
+        <%= content_tag(:th, link_to('ID', processing_nodes_path(:show => params[:show], :search => params[:search], :sort => get_column_sort_criteria('id'))), :class => get_column_class('id')) %>
+        <%= content_tag(:th, link_to('Node Identifier', processing_nodes_path(:show => params[:show], :search => params[:search], :sort => get_column_sort_criteria('node_identifier'))), :class => get_column_class('node_identifier')) %>
+        <%= content_tag(:th, link_to('IP Address', processing_nodes_path(:show => params[:show], :search => params[:search], :sort => get_column_sort_criteria('ip_address'))), :class => get_column_class('ip_address')) %>
+        <%= content_tag(:th, link_to('Status', processing_nodes_path(:show => params[:show], :search => params[:search], :sort => get_column_sort_criteria('status'))), :class => get_column_class('status')) %>
+        <%= content_tag(:th, link_to('Queue', processing_nodes_path(:show => params[:show], :search => params[:search], :sort => get_column_sort_criteria('queue'))), :class => get_column_class('queue')) %>
+        <%= content_tag(:th, link_to('Running jobs'), :class => 'column-head') %>
+        <%= content_tag(:th, 'Actions', :class => 'column-head') %>
+      <% end %>
+    <% end %>
+    <% content_tag(:tbody, :id => 'table_body') do %>
+      <% processing_nodes.each do |processing_node| %>
+        <% content_tag(:tr, :class => cycle(' stripe', '')) do %>
+          <%= content_tag(:td, (current_user.jobs_queues_admin.include?(processing_node.jobs_queue) or current_user.is_site_admin?) ? check_box_tag('processing_node_ids[]', processing_node.id) : '') if current_user %>
+          <%= content_tag(:td, link_to(processing_node.id, processing_node), :class => get_column_class('id')) %>
+          <%= content_tag(:td, link_to(processing_node.node_identifier, processing_node), :class => get_column_class('node_identifier')) %>
+          <%= content_tag(:td, processing_node.ip_address, :class => get_column_class('ip_address')) %>
+          <%= content_tag(:td, processing_node.status.humanize, :class => get_column_class('status')) %>
+          <%= content_tag(:td, link_to(processing_node.jobs_queue.name, processing_node.jobs_queue), :class => get_column_class('queue')) %>
+          <%= content_tag(:td, processing_node.running_jobs.collect{|job| link_to(job.description, job)}.join(', ')) %>
+          <%= content_tag(:td, get_processing_node_actions(processing_node), :class => 'actions') %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= no_content('Sorry, no processing nodes matched your criteria') %>
+  <% end %>
+<% end %>
+<%= will_paginate processing_nodes unless params[:show] %>

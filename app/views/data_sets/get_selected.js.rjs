@@ -1,0 +1,18 @@
+page.replace_html(:wizard_selection, :partial => 'selected')
+page.replace(:tags, :partial => 'tags', :locals => {:tags => @tags}) unless @tags.blank?
+page << "if (element = $$('li.current').first()) { element.removeClassName('current');}"
+if ['public', 'private', 'all'].include?(params[:type])
+  page << "$('#{params[:type]}').addClassName('current')"
+elsif params[:type] == 'group'
+  page << "$('#{params[:id]}').addClassName('current')"
+end
+if session[:r_script_id]
+  parameter = RScript.get_next_data_set_parameter(session[:r_script_id], session[:data_set_parameters])
+  if !@data_sets.blank? and (RScript.count_remaining_data_set_parameters(session[:r_script_id], session[:data_set_parameters]) > 1) and !parameter.nil?
+    page << "$('next_step').href = 'select_data_set?parameter_id=#{parameter.id}&data_set_id=#{@data_sets.first.id}'"
+  elsif !@data_sets.blank? and !parameter.nil?
+    page << "$('next_step').href = 'set_information?parameter_id=#{parameter.id}&data_set_id=#{@data_sets.first.id}'"
+  else
+    page << "$('next_step').href = ''"
+  end
+end

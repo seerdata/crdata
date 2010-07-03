@@ -1,0 +1,18 @@
+<div class="comment_form">
+	<% remote_form_for(comment) do |form| %>
+		<ul class="form">
+			<li><%= form.label(:title) %>
+				<%= form.text_field(:title, :class => 'text') %></li>
+			<li><%= form.label(:comment) %>
+				<%= form.text_area(:comment, :rows => 4) %>
+				<%= form.hidden_field(:user_id) %>
+				<%= form.hidden_field(:commentable_id) %>
+				<%= form.hidden_field(:commentable_type) %></li>
+		</ul>
+		<fieldset class="buttons"><ol>
+			<li class="commit">
+				<%= submit_tag %>
+			</li>
+		</ol></fieldset>
+	<% end  %>
+</div>

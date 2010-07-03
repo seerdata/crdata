@@ -1,0 +1,7 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, "#{@r_script.name} Script Help Page") %>
+<% end %>
+
+<% content_for(:content) do %>
+  <%= @r_script.description %>
+<% end %>

@@ -1,0 +1,55 @@
+<% content_for(:intro) do %>
+  <h1>Manage Groups</h1>
+  <p class="solo">Use the interactive interface below to manage your Groups.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <% content_tag(:div, :class => 'table') do %>
+    <% content_tag(:div, :id => 'search_form') do %>
+      <% form_tag(by_user_groups_path, :method => :get) do %>
+        <%= text_field_tag(:search,
+          params[:search] || 'search data',
+          :class => 'text',
+          :onfocus => %Q(if (this.value == 'search data') { this.value = '' }; this.style.color = '#555555';),
+          :onblur  => %Q(if (this.value == '') { this.value = 'search data' }; this.style.color = '#aaaaaa';)) %>
+        <%= hidden_field_tag(:sort, params[:sort]) if params[:sort] %>
+        <%= hidden_field_tag(:show, params[:show]) if params[:show] %>
+        <%= hidden_field_tag(:user_id, @user.id) %>
+        <%= submit_tag(:search, :class => 'search_submit') %>
+      <% end %>
+    <% end %>
+    <% content_tag(:div, :class => 'rel') do %>
+      <% content_tag(:ul, :class => 'header_actions') do %>
+        <%= content_tag(:li, link_to('View All', by_user_groups_path(:show => 'all', :sort => params[:sort], :search => params[:search], :user_id => @user.id), {}, {:class => 'header_actions'})) %>
+      <% end %>
+    <% end %>
+    <%= content_tag(:h3, "Groups by user: #{content_tag(:em, @user.name)}") %>
+    <% content_tag(:table, :class => 'sdt') do %>
+      <% if !@groups.blank? %>
+        <% content_tag(:thead) do %>
+          <% content_tag(:tr) do %>
+            <%= content_tag(:th, link_to('ID', by_user_groups_path(:search => params[:search], :show => params[:show], :sort => get_column_sort_criteria('id'), :user_id => @user.id)), :class => get_column_class('id')) %>
+            <%= content_tag(:th, link_to('Name', by_user_groups_path(:search => params[:search], :show => params[:show], :sort => get_column_sort_criteria('name'), :user_id => @user.id)), :class => get_column_class('name')) %>
+            <%= content_tag(:th, link_to('Description', by_user_groups_path(:search => params[:search], :show => params[:show], :sort => get_column_sort_criteria('description'), :user_id => @user.id)), :class => get_column_class('description')) %>
+            <%= content_tag(:th, 'Users', :class => 'column-head') %>
+            <%= content_tag(:th, 'Actions', :class => 'column-head') %>
+          <% end %>
+        <% end %>
+        <% content_tag(:tbody, :id => 'table_body') do %>
+          <% @groups.each do |group| %>
+            <% content_tag(:tr, :class => cycle(' stripe', '')) do %>
+              <%= content_tag(:td, link_to(group.id, group), :class => get_column_class('id')) %>
+              <%= content_tag(:td, link_to(group.name, group), :class => get_column_class('name')) %>
+              <%= content_tag(:td, link_to(group.description, group), :class => get_column_class('description')) %>
+              <%= content_tag(:td, group.users.approved.size) %>
+              <%= content_tag(:td, get_group_actions(group), :class => 'actions') %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= no_content('Sorry, no groups matched your criteria') %>
+      <% end %>
+    <% end %>
+    <%= will_paginate @groups unless params[:show] %>
+  <% end %>
+<% end %>

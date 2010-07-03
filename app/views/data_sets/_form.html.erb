@@ -1,0 +1,66 @@
+<%= clear %>
+<h2>Upload data</h2>
+
+<% semantic_form_for(@data_set || DataSet.new) do |form| %>
+  <% content_tag(:ul, :class => 'form') do %>
+    <%= form.input(:name, :input_html => { :class => 'text'}) %>
+    <%= form.input(:tag_list, :input_html => { :class => 'text'}, :hint => 'Needs to be separated by commas') %>
+    <%= hidden_field_tag(:job, '1') %>
+    <%= hidden_field_tag(:index, '0') %>
+    <%= clear(:li) %>
+    <%= form.input(:description, :input_html => { :rows => 6, :class => 'text'}) %>
+    <%= clear(:li) %>
+    <% content_tag(:li, :class => 'reset', :style => 'width:760px; overflow:visible;') do %><ul>
+        <li class="spark-adv-control">
+          <%= label_tag(:visibility) %>
+          <%= select_tag(:visibility, options_for_select(%w(public private share), params[:visibility]), :id => 'visibility') %>
+        </li>
+        <% content_tag(:li, :id => 'select_groups', :style => (params['visibility'] == 'share') ? '' : 'display: none') do %>
+          <%= label_tag(:groups) %>
+          <%= select_tag(:groups, options_for_select((current_user.groups.approved - current_user.groups.default).collect{|group| [group.name, group.id.to_s]}, params[:groups]), :multiple => true) %>
+        <% end %>
+        <%= clear(:li) %>
+    	<% content_tag(:li, :id => 'select_storage', :style => (params[:visibility] and params['visibility'] != 'public') ? '' : 'display: none') do %>
+			<%= label_tag(:storage) %>
+			<%= select_tag(:storage, options_for_select({'Temporary free storage on CRdata' => 'temporary' , 'Use your own S3 bucket' => 'own'}, params[:storage])) %>
+		<% end %>
+		<%= clear(:li) %>
+		<% content_tag(:li, :id => 'select_aws_key', :style => (params['storage'] == 'own') ? '' : 'display: none') do %>
+			<%= label_tag(:aws_key, '<h3>AWS Key</h3>') %>
+			<%= select_tag(:aws_key, options_for_select(current_user.aws_keys.collect{|aws_key| [(aws_key.name.blank? ? '(no name)' : aws_key.name), aws_key.id.to_s]} << ['(new key)', 'new_key'], params[:aws_key])) %>
+		<% end %>
+        <% content_tag(:li, :id => 's3_credentials', :class => 'w535', :style => (params['aws_key'] == 'new_key') ? '' : 'display: none') do %>
+        
+          <div style="float:left; width:165px; margin-right:20px">
+            <%= label_tag('s3_credentials[access_key_id]', 'Access Key Id') %>
+            <%= text_field_tag('s3_credentials[access_key_id]') %>
+          </div>
+          <div style="float:left; width:165px; margin-right:20px">
+            <%= label_tag('s3_credentials[secret_access_key]', 'Secret Access Key') %>
+            <%= text_field_tag('s3_credentials[secret_access_key]') %>
+          </div>
+         <div style="float:left; width:165px">
+          <%= label_tag(:save_aws_keys, 'Save AWS Keys') %>
+ 	      <%= check_box_tag(:save_aws_keys, '0', false, :onclick => 'if (checked) {value = 1} else {value = 0}') %> 
+         </div>
+         <%= clear %>
+      <% end %>
+            <% content_tag(:li, :id => 's3_bucket', :style => (params['storage'] == 'own') ? 'float:left;width:165px' : 'float:left; width:165px; display:none') do %>
+              <%= label_tag('s3_credentials[bucket]', 'Bucket') %>
+              <%= text_field_tag('s3_credentials[bucket]') %>
+            <% end %>
+		</ul><% end if current_user %>
+		<%= clear(:li) %>
+	<% end -%>
+	
+    <%= swf_upload_area 'Upload dataset &nbsp;', 
+          :url => data_sets_path,
+          :filetypes => '*.*',
+          :single_file => true, 
+          :file_size_limit => '500 MB',
+          :post_params => 'job:job, index:index, data_set[name]:data_set_name, data_set[description]:data_set_description, data_set[tag_list]:data_set_tag_list' + ((current_user) ? ', visibility:visibility, storage:storage, save_aws_keys:save_aws_keys, aws_key:aws_key, s3_credentials[bucket]:s3_credentials_bucket, groups[]:groups, s3_credentials[access_key_id]:s3_credentials_access_key_id, s3_credentials[secret_access_key]:s3_credentials_secret_access_key' : ''),
+          :button_style => 'font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:bold; color:#ffffff;' %>
+    <%= content_tag(:span, 'or ' + link_to('Cancel', '#', :onclick => "$('data_set_form').style.visibility = 'hidden'; return false;"), :class => 'form-cancel') %>
+    <%= clear %>
+  <% end -%>
+  <%= javascript_include_tag('data/new') if current_user %>

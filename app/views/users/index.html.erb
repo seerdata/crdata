@@ -1,0 +1,33 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Site Management') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage registered users.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+
+    <div class="rel"><% content_tag(:div, :id => 'search_form') do %>
+      <% form_tag(users_path(), :method => "get") do %>
+        <%= text_field_tag(:q,
+          params[:q] || 'search users',
+          :class => 'text',
+          :onfocus => %Q(if (this.value == 'search users') { this.value = '' }; this.style.color = '#555555';),
+          :onblur  => %Q(if (this.value == '') { this.value = 'search users' }; this.style.color = '#aaaaaa';)) %>
+        <%= submit_tag("Search", :class => 'search_submit') %>
+        <%= link_to("clear search", users_path) unless params[:q].blank? %>
+      <% end -%>
+    <% end -%></div>
+    <% content_tag(:div, :class => 'rel') do %>
+      <% content_tag(:ul, :class => 'header_actions') do %>
+        <%= content_tag(:li, link_to("View all", users_path(:q => params[:q], :sort => params[:sort], :view => "all"))) %>
+      <% end %>
+    <% end %>
+    
+  <h3>Manage: Users <span>|||</span> <%= link_to('Announcements', announcements_path) %></h3>
+  <% content_tag(:div, :class => 'table') do %>
+    <% content_tag(:div, :id => "users_result") do %>
+      <%= render :partial => "users_result", :object => @users %>
+    <% end -%>
+    <%= will_paginate(@users) unless params[:view] == "all" %>
+  <% end -%>
+  <%= javascript_include_tag('users/index') %>
+<% end -%>

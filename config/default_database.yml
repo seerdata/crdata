@@ -1,0 +1,20 @@
+login: &login
+  adapter: postgresql
+  username: pguser
+  password: pgpwd
+  encoding: UTF8
+
+development:
+  database: crdata_dev
+  <<: *login  
+
+test:
+  database: crdata_test
+  <<: *login
+  
+production:
+  database: crdata_production
+  <<: *login
+
+cucumber:
+  <<: *TEST

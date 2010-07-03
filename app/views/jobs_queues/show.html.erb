@@ -1,0 +1,38 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Jobs Queues') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your Jobs Queues.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <h2>
+    <span>Queue:</span>
+    <%=h @jobs_queue.name %>
+  </h2>
+
+ <% content_tag(:div) do %>
+    <hr size="0" />  
+    <h3>Jobs:</h3>
+    <% content_tag(:ol, :class => 'decimal_li') do %>
+      <% @jobs_queue.jobs.each do |job| %> 
+        <% content_tag(:li) do %>
+          <%= job.description %> (<%= job.status %>)
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end unless @jobs_queue.jobs.size.zero? %>
+  
+  <% content_tag(:div) do %>
+    <hr size="0" />  
+    <h3>Processing Nodes:</h3>
+    <% content_tag(:ol, :class => 'decimal_li') do %>
+      <% @jobs_queue.processing_nodes.each do |processing_node| %> 
+        <% content_tag(:li) do %>
+          <%= (processing_node.node_identifier.blank?) ? processing_node.ip_address : processing_node.node_identifier %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end unless @jobs_queue.processing_nodes.size.zero? %>
+
+   <hr size="0" />  
+  <%= link_to 'Back', (current_user and current_user.is_site_admin? and current_user != @jobs_queue.owner) ? by_user_jobs_queues_path(:user_id => @jobs_queue.owner.id) : jobs_queues_path %>
+<% end %>

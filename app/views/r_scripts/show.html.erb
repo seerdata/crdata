@@ -1,0 +1,51 @@
+<% content_for(:head) do %>
+  <%= ajaxful_rating_style %>
+<% end -%>
+
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Scripts') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your R scripts.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <h2>
+    <span>R Script:</span>
+    <%=h @r_script.name %>
+  </h2>
+  <p>
+    <%= content_tag(:span, "<strong>Approx. CPU requirement:</strong> ") + "#{h @r_script.estimate}<br />" unless @r_script.estimate.blank? %>
+    <%= content_tag(:span, "<strong>Description:</strong> ") + "#{@r_script.description}<br />" unless @r_script.description.blank? %>
+  </p>
+
+  <h3>Source code:</h3>
+  <hr size="0" />  
+
+    <%= Uv.parse(@r_script.source_code, "xhtml", "r", true, "slush_poppies") rescue simple_format(@r_script.source_code) %>
+	<br /><br />
+
+  <% @raters.each do |rater| %>
+    <hr size="0" />
+    <div class="left_rating"><h3>Ratings by <%= (rater == current_user) ? 'you' : rater.name %>:</h3>
+    <% R_SCRIPT_DIMENSIONS.each_pair do |dimension, title| %>
+      <%= title %>: <%= ratings_for(@r_script, rater, :dimension => dimension, :show_user_rating => true, :wrap => (rater == current_user) ? true : false, :remote_options => {:url => rate_r_script_path(@r_script)}) %>
+    <% end %></div>
+    <% if comment = @r_script.comments.find_by_user_id(rater.id) %>
+      <%= render(:partial => 'comments/comment', :locals => {:comment => comment}) %>
+    <% elsif rater == current_user %>
+      <%= render(:partial => 'comments/form', :locals => {:comment => @comment}) %>
+    <% end  %>
+  <% end %>
+  <% if current_user and !@raters.include?(current_user) %>
+    <hr size="0" />
+    <div class="left_rating"><h3>Ratings by you:</h3>
+  <% R_SCRIPT_DIMENSIONS.each_pair do |dimension, title| %>
+      <%= title %>: <%= ratings_for(@r_script, current_user, :dimension => dimension, :show_user_rating => true, :remote_options => {:url => rate_r_script_path(@r_script)}) %>
+    <% end %></div>
+    <%= render(:partial => 'comments/form', :locals => {:comment => @comment}) %>
+  <% end %>
+  <%= clear %><br />
+
+  <hr size="0" />  
+  <%= content_tag(:span, link_to('Edit Script', edit_r_script_path(@r_script)), :class => 'spark-adv-submit') if current_user and (current_user.groups.default.first.r_scripts.include?(@r_script) or (current_user.is_site_admin? and @r_script.is_public)) %>
+  <%= content_tag(:span, link_to('Back', (current_user and current_user.is_site_admin? and current_user != @r_script.owner) ? by_user_r_scripts_path(:user_id => @r_script.owner.id) : r_scripts_path), :class => 'form-cancel') %>
+<% end %>

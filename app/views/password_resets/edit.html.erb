@@ -1,0 +1,18 @@
+<% content_for(:intro) do %>
+	<h1>Change Password</h1>
+	<p class="solo">Use the interactive interface below to manage your account.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+  <h2>Change Password</h2>
+   
+  <% semantic_form_for(@user, :url => password_reset_path, :method => :put) do |form| %>
+    <%= form.error_messages %>
+    <%= form.input(:password, :as => :password, :input_html => { :class => 'text'}) %>
+    <%= form.input(:password_confirmation, :as => :password, :input_html => { :class => 'text'}) %>
+    <% form.buttons do %>
+      <%= form.commit_button(:label => 'Change Password') %>
+    <% end %>
+    <span class="form-cancel">or <%= link_to('Cancel', root_path) %></span>
+  <% end %>
+<% end %>

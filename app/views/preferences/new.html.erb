@@ -1,0 +1,31 @@
+<% content_for(:intro) do %>
+	<%= content_tag(:h1, 'Manage Account') %>
+	<%= content_tag(:p, 'Use the interactive interface below to manage your account settings.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <% if @preference.kind %>
+    <%= content_tag(:h2, @preference.kind.humanize) %>
+    <% semantic_form_for(@preference, :url => @preference.new_record? ? account_preferences_path : account_preference_path(@preference.id)) do |form| %>
+      <% content_tag(:ul, :class => 'form') do %>
+        <% if @preference.kind == 'availability_zone' %>
+          <%= form.input(:value, :as => :select, :collection => EC2_AVAILABILITY_ZONES, :label => @preference.kind.humanize, :input_html => { :class => 'text'}) %>
+        <% elsif @preference.kind == 'default_queue' %>
+          <%= form.input(:value, :as => :select, :collection => formatted_queues(current_user.jobs_queues), :label => @preference.kind.humanize, :input_html => { :class => 'text'}) %>
+        <% elsif @preference.kind == "homepage_notification" %>
+          <%= form.input(:value, :as => :text, :collection => formatted_queues(current_user.jobs_queues), :label => @preference.kind.humanize, :input_html => { :class => 'text'}) %>
+        <% else %>
+          <%= form.input(:value, :label => @preference.kind.humanize, :input_html => { :class => 'text'}) %>
+        <% end %>
+        <%= form.input(:kind, :as => :hidden) %>
+        <%= clear(:li) %>
+      <% end %>
+      <% form.buttons do %>
+        <%= form.commit_button %>
+      <% end %>
+      <span class="form-cancel">or <%= link_to('Cancel', account_path) %></span>
+    <% end %>
+  <% else %>
+    <%= content_tag(:p, 'Please select parameter type') %>
+  <% end %>
+<% end -%>

@@ -1,0 +1,42 @@
+
+  <% content_tag(:div, :class => 'rel') do %>
+    <% content_tag(:ul, :class => 'header_actions') do %>
+    <%= content_tag(:li, link_to('Add Job - Wizard', new_job_select_script_path, {}, {:class => 'header_actions'})) %>
+    <%= content_tag(:li, link_to('Add Job - Manual', new_job_path, {}, {:class => 'header_actions'})) %>
+      <%= content_tag(:li, link_to('View All', jobs_path(:show => 'all', :statuses => params[:statuses], :sort => params[:sort]), {}, {:class => 'header_actions'})) %>
+    <%= content_tag(:li, submit_tag('Delete', :class => 'deleteall_submit', :confirm => 'Are you sure you want to delete selected jobs?')) if current_user %>
+    <% end %>
+  <% end %>
+  
+<% content_tag(:table, :class => 'sdt') do %>
+  <% if !jobs.blank? %>
+    <% content_tag(:thead) do %>
+      <% content_tag(:tr) do %>
+        <%= content_tag(:th, check_box_tag('jobs', 1, false, :onclick => "toggleCheckBoxes(this)")) if current_user %>
+        <%= content_tag(:th, link_to('ID', jobs_path(:statuses => params[:statuses], :show => params[:show], :sort => get_column_sort_criteria('id'))), :class => get_column_class('id')) %>
+        <%= content_tag(:th, link_to('Description', jobs_path(:statuses => params[:statuses], :show => params[:show], :sort => get_column_sort_criteria('description'))), :class => get_column_class('description')) %>
+        <%= content_tag(:th, link_to('Created at', jobs_path(:statuses => params[:statuses], :show => params[:show], :sort => get_column_sort_criteria('created_at'))), :class => get_column_class('created_at')) %>
+        <%= content_tag(:th, link_to('Status', jobs_path(:statuses => params[:statuses], :show => params[:show], :sort => get_column_sort_criteria('status'))), :class => get_column_class('status')) %>
+        <%= content_tag(:th, link_to('Running Time', jobs_path(:statuses => params[:statuses], :show => params[:show], :sort => get_column_sort_criteria('running_time'))), :class => get_column_class('running_time')) %>
+        <%= content_tag(:th, 'Actions', :class => 'column-head') %>
+      <% end %>
+    <% end %>
+    <% content_tag(:tbody, :id => 'table_body') do %>
+      <% jobs.each do |job| %>
+        <% content_tag(:tr, :class => cycle(' stripe', '')) do %>
+          <%= content_tag(:td, ((job.status == 'cancelled') or ((job.status == 'done') and job.successful)) ? check_box_tag('job_ids[]', job.id) : '') if current_user %>
+          <%= content_tag(:td, link_to(job.id, job), :class => get_column_class('id')) %>
+          <%= content_tag(:td, link_to(job.description, job), :class => get_column_class('description')) %>
+          <%= content_tag(:td, job.created_at, :class => get_column_class('created_at')) %>
+          <%= content_tag(:td, get_status_icon(job), :class => get_column_class('status')) %>
+          <%= content_tag(:td, get_running_time(job), :class => get_column_class('running_time')) %>
+          <%= content_tag(:td, get_job_actions(job), :class => 'actions') %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= no_content('Sorry, no jobs matched your criteria') %>
+  <% end %>
+<% end %>
+<%= will_paginate jobs unless params[:show] %>
+

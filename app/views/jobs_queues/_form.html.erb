@@ -1,0 +1,45 @@
+<% content_tag(:ul, :class => 'form') do %>
+  <%= form.input(:name, :input_html => { :class => 'text'}) %>
+  <%= clear(:li) %>
+  <%= form.input(:is_autoscalable, :label => 'Auto-scale', :onclick => 'toggleAutoscale(this)') %>
+  <%= clear(:li) %>
+  <% content_tag(:li, :id => 'auto_scale', :style => form.object.is_autoscalable ? '' : 'display: none') do %><ul>
+    <%= form.input(:min_processing_nodes, :label => 'Minimum nr. of processing nodes to be associated', :input_html => { :class => 'text number'}) %>
+    <%= clear(:li) %>
+    <%= form.input(:max_processing_nodes, :label => 'Maximum nr. of processing nodes to be associated', :input_html => { :class => 'text number'}) %>
+    <%= clear(:li) %>
+    <%= form.input(:nr_jobs, :label => 'Set nr. of jobs after auto-scale process for nodes starts', :input_html => { :class => 'text number'}) %>
+    <%= clear(:li) %>
+    <%= form.input(:max_idle_time, :label => 'Set maximum idle time for a processing node', :input_html => { :class => 'text number'}) %>
+    <%= clear(:li) %>
+    <%= form.input(:max_waiting_time, :label => 'Set maximum waiting time for a job to be processed (in minutes)', :input_html => { :class => 'text number'}) %>
+    <%= clear(:li) %>
+    <%= form.input(:aws_key, :collection => current_user.aws_keys.collect{|aws_key| [aws_key.name, aws_key.id]} << ['(new key)', 0], :include_blank => false, :label => 'AWS Key', :input_html => { :class => 'text'}) %>
+    <%= clear(:li) %>
+    <% content_tag(:li, :id => 'aws_credentials', :style => (@jobs_queue.aws_key or (@jobs_queue.aws_key_id.blank? and !current_user.aws_keys.size.zero?)) ? 'display: none' : '') do %>
+      <% content_tag(:ul) do %>
+        <% content_tag(:li, :class => 'spark-adv-control') do %>
+          <%= label_tag('aws_credentials[access_key_id]', 'Access Key Id') %>
+          <%= text_field_tag('aws_credentials[access_key_id]', (params[:aws_credentials]) ? params[:aws_credentials][:access_key_id] : '', :class => 'text') %>
+        <% end -%>
+        <% content_tag(:li, :class => 'spark-adv-control') do %>		
+          <%= label_tag('aws_credentials[secret_access_key]', 'Secret Access Key') %>
+          <%= text_field_tag('aws_credentials[secret_access_key]', (params[:aws_credentials]) ? params[:aws_credentials][:secret_access_key] : '',  :class => 'text') %>
+        <% end -%>
+      <% end -%>
+    <% end -%>
+  </ul><% end -%>
+  <%= clear(:li) %>
+
+  <li class="spark-adv-control">
+    <%= label_tag(:visibility) %>
+    <%= select_tag(:visibility, options_for_select(%w(private share) + ((current_user.is_site_admin?) ? ['public'] : []), visibility = get_visibility(form.object, params[:visibility])), :id => 'visibility') %>
+  </li>
+  
+  <% content_tag(:li, :id => 'select_groups', :style => (visibility == 'share') ? '' : 'display: none') do %>
+    <%= label_tag(:groups) %>
+    <%= select_tag(:groups, options_for_select((current_user.groups.approved - current_user.groups.default).collect{|group| [group.name, group.id.to_s]}, get_groups(form.object, params[:groups])), :multiple => true) %>
+  <% end %>
+  <%= clear(:li) %>
+<% end -%>
+

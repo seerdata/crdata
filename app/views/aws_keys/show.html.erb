@@ -1,0 +1,22 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage AWS Keys') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your AWS Keys.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <h2>
+    <span>Name:</span>
+    <%=h @aws_key.name %>
+  </h2>
+  <p>
+    <strong>Access key:</strong>
+    <%= @aws_key.access_key_id %>
+  </p>
+   <p>
+    <strong>Secret access key:</strong>
+    <%= @aws_key.secret_access_key %>
+  </p>
+
+  <hr size="0" />  
+  <p><%= link_to 'Back', aws_keys_path %></p>
+<% end %>

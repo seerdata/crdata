@@ -1,0 +1,104 @@
+<% content_for(:intro) do %>
+	<%= render(:partial => 'intro', :use_full_path => true) %>
+<% end -%>
+
+<% content_for(:content) do %>
+	
+	<h2>Use CRdata to</h2>
+	<ul class="bullet_list">
+		<li>Analyze your data in the Cloud
+			<p>- no need to buy or maintain your own CPU cluster <br />
+				- no need to maintain up-to-date versions of R and Bioconductor
+			</p>
+		</li>
+		<li>Share your R code with non-computational people. CRdata’s simple Graphical User Interface hides the comlexity of R code
+			<p>- CRdata’s simple Graphical User Interface hides the comlexity of R code</p>
+		</li>
+		<li>Share your data/scripts with your collaborators (or the world!)</li>
+		<li>Share computational methods/data published in a journal paper.
+			<p>- make your Supplementary Materials interactive!</p>
+		</li>
+		<li>Provide tailored data analysis resources to subscriber groups</li>
+		<li>Share classroom excercise scripts and data</li>
+	</ul>
+
+	<h2>Program the CRdata infrastructure to provide</h2>
+	<ul class="bullet_list"><li>Analysis resources via cell phones</li>
+	<li>Access to analysis environments other than R</li>
+	<li>Computation on processor nodes other than Amazon EC2</li>
+	<li>CRdata resources integrated into 3rd party software</li>
+	<li>New aggregation and filtering web services</li></ul>
+	
+	<p>To use CRdata as a Guest user, simply go the <%= link_to('Data tab', data_sets_path) %> and click on the <%= link_to('Add dataset button', new_data_set_path) %> at top right. Once you have loaded your data, go the the <%= link_to('Run analyses tab', jobs_path) %> and click <%= link_to('Add Job', new_job_path) %>. Once your run has started, refresh your browser to check its status.</p>
+	
+	<p>When the run is complete, you can click on the Results link for your run to see the results. If any errors occur, they will be listed in the log file (click the Logs link for your run). It’s as simple as that!</p>
+	
+	<% unless current_user %><br /><span class="spark-adv-submit"><%= link_to('Register Now', new_account_path) %></span><% end -%>
+	<%= clear %>
+	<br /><hr />
+	<!--<p class="fade">This page is under construction. More 'how to' instructions to come soon!</p>-->
+	
+	<h2 id='tutorials'>Tutorials</h2>
+	<div class="tutorial">
+		<h3>Tutorial 1:: Welcome to CRdata (Intro video)</h3>
+		<div class="tutorial_embed">
+			<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/-f3wygPz6LA&hl=en_US&fs=1&rel=0&color1=0xe1600f&color2=0xfebd01"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/-f3wygPz6LA&hl=en_US&fs=1&rel=0&color1=0xe1600f&color2=0xfebd01" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>
+		</div>
+	</div>
+	
+	
+	<div class="tutorial">
+		<h3>Tutorial 2:: CRdata - How to sign up and run simple script</h3>
+		<div class="tutorial_embed">
+			<object width="640" height="360"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=11085035&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=11085035&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="640" height="360"></embed></object>
+		</div>
+	</div>
+	
+	
+	<div class="tutorial">
+		<h3>Tutorial 3:: CRdata - How to upload new script</h3>
+		<div class="tutorial_embed">
+			<object width="640" height="360"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=11085763&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=11085763&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="640" height="360"></embed></object>
+		</div>
+	</div>
+	
+	
+	<div class="tutorial">
+		<h3>Tutorial 4:: CRdata - How can developer create new script</h3>
+		<div class="tutorial_embed">
+			<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/tP0JWM5rHsU&hl=en_US&fs=1&rel=0&color1=0xe1600f&color2=0xfebd01"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/tP0JWM5rHsU&hl=en_US&fs=1&rel=0&color1=0xe1600f&color2=0xfebd01" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>
+		</div>
+	</div>
+	
+	
+	<div class="tutorial">
+		<h3>Tutorial 5:: CRdata - How to create integer parameters for scripts</h3>
+		<div class="tutorial_embed">
+			<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/BKeQ0bopQ9I&hl=en_US&fs=1&rel=0&color1=0xe1600f&color2=0xfebd01"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/BKeQ0bopQ9I&hl=en_US&fs=1&rel=0&color1=0xe1600f&color2=0xfebd01" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>
+		</div>
+	</div>
+	
+	
+	<div class="tutorial">
+		<h3>Tutorial 6::CRdata - Public scripts with graphical plot output</h3>
+		<div class="tutorial_embed">
+			<object width="640" height="360"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=11085832&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=11085832&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="640" height="360"></embed></object>
+		</div>
+	</div>
+	
+	
+	<div class="tutorial">
+		<h3>Tutorial 7:: CRdata share scripts and run</h3>
+		<div class="tutorial_embed">
+			<object width="640" height="360"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=11095347&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=11095347&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="640" height="360"></embed></object>
+		</div>
+	</div>
+	
+	
+	<div class="tutorial">
+		<h3>Tutorial 8:: CRdata - Uploading datasets and dataset parameters</h3>
+		<div class="tutorial_embed">
+			<object width="640" height="360"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=11098376&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=11098376&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=FF9900&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="640" height="360"></embed></object>
+		</div>
+	</div>
+<% end -%>

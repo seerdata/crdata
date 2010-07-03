@@ -1,0 +1,5 @@
+if @success
+  page.replace(:new_comment, :partial => 'comment', :locals => {:comment => @comment})
+else
+  @comment.errors.each{|attr, msg| page.insert_html :after, "comment_#{attr}", "<p class='inline-errors'>#{msg}</p>" } 
+end

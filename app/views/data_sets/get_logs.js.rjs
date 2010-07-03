@@ -1,0 +1,9 @@
+page.replace_html('some_id', :partial => 'logs', :locals => {:data_set => @data_set, :logs => @logs}) 
+if session[:r_script_id]
+  parameter = RScript.get_next_data_set_parameter(session[:r_script_id], session[:data_set_parameters])
+  if RScript.count_remaining_data_set_parameters(session[:r_script_id], session[:data_set_parameters]) > 1
+    page << "$('next_step').href = 'select_data_set?parameter_id=#{parameter.id}&data_set_id=#{@data_set.id}'"
+  else
+    page << "$('next_step').href = 'set_information?parameter_id=#{parameter.id}&data_set_id=#{@data_set.id}'"
+  end
+end

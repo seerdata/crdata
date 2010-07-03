@@ -1,0 +1,72 @@
+<% content_for(:intro) do %>
+  <%= content_tag(:h1, 'Manage Jobs') %>
+  <%= content_tag(:p, 'Use the interactive interface below to manage your analysis runs.', :class => 'solo') %>
+<% end %>
+
+<% content_for(:content) do %>
+  <div class="job_status" style="background-image:url(../images/icons/<%= status = ((@job.status == 'done') and !@job.successful) ? 'failed' : @job.status %>.png)">
+    <strong>Status:</strong><br />
+    <%= status %>
+  </div>
+  
+  <h2>
+    <span>Job:</span>
+    <%=h @job.description? ? @job.description : 'Default job title' %>
+  </h2>
+
+  <p>
+    <strong>R script:</strong>
+    <%=h @job.r_script.name %>
+  </p>
+
+  <h3>Job Timing</h3>
+  <hr size="0" />
+  <div class="job_dates">
+	  <p>
+	    <strong>Submitted:</strong><br />
+	    <%=h @job.submitted_at? ? @job.submitted_at : 'not yet' %>
+	  </p>
+	
+	  <p>
+	    <strong>Started:</strong><br />
+	    <%=h @job.started_at? ? @job.started_at : 'not yet' %>
+	  </p>
+	
+	  <p>
+	    <strong>Completed:</strong><br />
+	    <%=h @job.completed_at? ? @job.completed_at : 'not yet' %>
+	  </p>
+  </div>
+
+  <% if @job.status == 'submitted' %> 
+  <hr size="0" />
+    <p><strong>Jobs Queue:</strong>
+    <%= link_to(@job.jobs_queue.name, @job.jobs_queue) %></p>
+  <% end %>
+    
+  <hr size="0" />
+  <%= content_tag(:h3, 'R Script') %>
+  <% content_tag(:p) do %>
+    <%= link_to(@job.r_script.name, @job.r_script) %>
+  <% end %>
+  
+  <% content_tag(:p) do %>
+    <%= content_tag(:strong, 'Parameters:') %><br />
+    <% @job.job_parameters.each do |job_parameter| %>
+      <%= job_parameter.parameter.title %>:
+      <%= job_parameter.data_set_id ? link_to(job_parameter.data_set.name, job_parameter.data_set) : job_parameter.value %>
+      <br />
+    <% end %>
+  <% end unless @job.job_parameters.blank? %>
+
+  <hr size="0" />
+	  <% if @job.status == 'done' %> 
+  <div class="go_right">
+	  <em>View job's:</em>
+    <%= link_to('Results', "#{S3_URL}/results/#{@job.uuid}/index.html", :target => :blank) + ' or ' if (@job.successful == true)  %> 
+    <%= link_to('Logs', "#{S3_URL}/logs/#{@job.uuid}/job.log", :target => 'logs') %>
+  </div>
+	  <% end %>
+  
+  <p><%= link_to 'Go back to jobs list', jobs_path %></p>
+<% end %>

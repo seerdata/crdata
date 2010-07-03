@@ -1,0 +1,6 @@
+if @success
+  page.replace(:new_parameter, :partial => 'form', :locals => {:parameter => Parameter.new(:r_script_id => (@parameter.r_script) ? @parameter.r_script.id : nil)})
+  page.replace(:parameters_list, :partial => 'list', :locals => {:parameter_ids =>(@parameter.r_script) ? @parameter.r_script.parameters.collect{|parameter| parameter.id} : session[:parameters]})
+else
+  @parameter.errors.each{|attr, msg| page.insert_html :bottom, "parameter_#{attr}_input", "<p class='inline-errors'>#{msg}</p>" } 
+end

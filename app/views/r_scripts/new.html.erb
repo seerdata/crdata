@@ -1,0 +1,28 @@
+<% content_for(:head) do %>
+  <%= include_tiny_mce_if_needed %>
+<% end -%>
+
+<% content_for(:intro) do %>
+	<h1>Manage Scripts</h1>
+	<p class="solo">Use the interactive interface below to manage your R scripts.</p>
+<% end -%>
+
+<% content_for(:content) do %>
+	<h2>New Script</h2>
+	
+	<% semantic_form_for(@r_script, :html => {:multipart => true}) do |form| %>
+		<%= render(:partial => 'form', :use_full_path => true, :locals => {:form => form}) %>
+		<% form.buttons do %>
+			<%= form.commit_button %>
+		<% end %>
+		<span class="form-cancel">or <%= link_to('Cancel', r_scripts_path) %></span>
+	<% end %>
+	<%= clear %>
+
+	<br /><br />
+	<hr size="0" />
+	<%= render(:partial => 'parameters/form', :locals => {:parameter => Parameter.new}) %>
+	<%= render(:partial => 'parameters/list', :locals => {:parameter_ids => []}) %>
+	<%= javascript_include_tag('r_scripts/new') %>
+	<%= clear %>
+<% end -%>

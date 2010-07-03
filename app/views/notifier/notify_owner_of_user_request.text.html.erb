@@ -1,0 +1,6 @@
+<p>
+<%= @group_user.user.name %> has requested to join <%= @group_user.group.name %>  
+</p>
+<p>
+You can approve or reject the request via this link: <%= link_to('here', edit_group_user_url(@group_user)) %>
+</p>

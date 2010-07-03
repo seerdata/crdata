@@ -1,0 +1,11 @@
+---
+cwd: /var/rails/crdata/current
+environment: production
+log_file: log/mongrel.log
+port: 9000
+address: 127.0.0.1
+pid_file: tmp/pids/mongrel.pid
+log_file: log/mongrel.log
+servers: 2
+user: rails_deploy
+group:  rails_deploy
