@@ -1,4 +1,24 @@
-== Welcome to Rails
+=============================================
+=== WELCOME TO THE CRDATA CODE REPOSITORY ===
+=============================================
+
+This repo contains the code for CRdata Server Nodes. In addition to the code in this repo, you will also need the code for CRdata R Processing Nodes, available from:
+
+http://github.com/rdulepet/CRData-Processing-Node
+
+To explore the code in these files, we suggest you read the CRdata Programmer's Guide, available at:
+
+http://docs.google.com/View?id=ddj9nb8j_380dwcwx9gp
+
+Enjoy!
+
+The CRdata Development Team 
+(http://crdata.org/about)
+
+
+
+
+== Some Background on Rails
 
 Rails is a web-application framework that includes everything needed to create 
 database-backed web applications according to the Model-View-Control pattern. 
