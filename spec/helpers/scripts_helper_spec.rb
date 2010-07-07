@@ -8,4 +8,4 @@ describe ScriptsHelper do
     included_modules.should include(ScriptsHelper)
   end
 
-end
+end 
