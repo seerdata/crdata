@@ -38,4 +38,4 @@ ds = DataSet.all
 
 # ProcessingNode
 ProcessingNode.create(:jobs_queue_id => jobs_queue, :ip_address => '127.0.0.1', :status => 'activated')
-=end
+=end 
