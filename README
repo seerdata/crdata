@@ -1,6 +1,6 @@
-=============================================
-=== WELCOME TO THE CRDATA CODE REPOSITORY ===
-=============================================
+                                      =============================================
+                                      === WELCOME TO THE CRDATA CODE REPOSITORY ===
+                                      =============================================
 
 This repo contains the code for CRdata Server Nodes. In addition to the code in this repo, you will also need the code for CRdata R Processing Nodes, available from:
 
@@ -14,6 +14,14 @@ Enjoy!
 
 The CRdata Development Team 
 (http://crdata.org/about)
+
+
+                            =====================================================================
+                                           CRdata.org is an open-source project 
+                                    (http://www.opensource.org/licenses/mit-license.php)
+                            Supported by a grant from the National Heart Lung and Blood Institute
+                            =====================================================================
+                                  
 
 
 
