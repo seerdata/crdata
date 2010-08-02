@@ -218,3 +218,4 @@ class ProcessingNodesController < ApplicationController
   end
 
 end
+
