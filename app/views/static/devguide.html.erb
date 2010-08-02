@@ -1,7 +1,7 @@
 <% content_for(:intro) do %>
 <h1>How to prepare R scripts for CRdata</h1>
 <h2>Introduction</h2>
-<p> CRdata is a web-based framework to submit, share, run and view R scripts and results. CRdata enables users to submit their R code for either their own use, or share with the community (public or within a specific group). CRdata enables developers to write scripts, upload data files, specify input parameters , and format the output results onto a web page (using HTML). It is highly recommended that developers test their scripts locally before submitting to CRdata. In addition to reading this document, please read the <%= link_to('Crdata help pages', userguide_path, :target => 'help') %>.
+<p> CRdata is a web-based framework to submit, share, run and view R scripts and results. CRdata enables users to submit their R code for either their own use, or share with the community (public or within a specific group). CRdata enables developers to write scripts, upload data files, specify input parameters , and format the output results onto a web page (using HTML). It is highly recommended that developers test their scripts locally before submitting to CRdata. In addition to reading this document, please read the <%= link_to('CRdata User Guide', userguide_path, :target => 'help') %>.
 </p>
 <p>CRdata will automatically pass user-specified input values to your R script. But you need to tell CRdata what outputs to present to the user. To do this, you need to insert HTML/XML style &#146;tags&#146; that mark the beginning and end of output commands in your code. You will also need to remove (comment out) commands relating to control of graphics devices.</p>
 <% end -%>
@@ -11,17 +11,16 @@
 <h3>Preparing your Script for CRdata</h3>
 <ul class="bullet_list"><li>Remove all code relating to control of graphics devices (e.g. dev.new, dev.off, windows, X11).</li>
 <li>If your code refers to other R scripts (e.g. functions), include the relevant code within the submitted script.</li>
-<li>Do not attempt to install packages within your code. CRdata automatically loads and updates all R and Bioconductor packages. However, some package installations or updates may fail due to dependencies etc. If you find that a package you wish to use is not already installed on CRdata, you can install the package by following	&lt;these instructions&gt;.</li>
-<li>If you need to use an unpublished package, follow &lt;these instructions still under development&gt;.</li>
+<li>Do not attempt to install packages within your code. CRdata automatically loads and updates all R and Bioconductor packages. However, some package installations or updates may fail due to dependencies etc. If you find that a package you wish to use is not already installed on CRdata, you can install the package by following	<a href='/devguide#add_r_packages'> Adding new R packages to CRdata</a>.</li>
 <li>Ensure that all functions called within your script are either part of an installed package, or included within the script.</li>
-<li>If you intend to make you script available to Guest Users, make sure your script does not attempt to save any internal variables.  
+<li>If you intend to make your script available to Guest Users, make sure your script does not attempt to save any internal variables.  
 <p>- Files in the Guest User directory may be deleted without notice. <br />
 - Registered users can save interval variables (R objects) for later use (e.g. in a data processing pipeline).</p></li>
 <li>CRdata's free processor queue currently only runs Unix processing nodes. Windows-specific R commands (e.g. to read Excel worksheets) will not work on CRdata. 
-<p>- You can purchase EC2 Windows worker nodes and use them with CRdata. <br />
+<p>-You can purchase EC2 Windows Instances, configure them as CRdata R worker nodes, and attach them to your private CRdata queues.  <br />
 - If there is enough demand (and funding!) we will be happy to add Windows nodes to our free service.</p></li></ul>
 
-<h3>Inputing data in CRdata</h3>
+<h3>Inputting data in CRdata</h3>
 <p>Input to a CRdata script can come in two ways:</p>
 <ul class="bullet_list"><li> Upload data files to be used by the script</li>
 <li>Specify parameters that can be changed in runtime during execution of the script</li></ul>
@@ -41,7 +40,7 @@
 
 
 <h2>The CRdata tag library</h2>
-<p>The goal of the CRdata tagging system is to be non-intrusive, and enable you to run your R scripts in both your desktop environment as well as in CRdata. In order to achieve this objective, all CRdata tags are prefixed with &#146;<strong>#</strong>&#146; (comments in R), and hence can be ignored when running the same script on your desktop. As a general rule, CRdata tags are only used to specify and format HTML output for your R scripts.</p>
+<p>All CRdata script output commands must be enclosed within special Tag pairs. Each tag must start on a new line. The goal of the CRdata tagging system is to be non-intrusive, and enable you to run your R scripts in both your desktop environment as well as in CRdata. In order to achieve this objective, all CRdata tags are prefixed with &#146;<strong>#</strong>&#146; (comments in R), and hence can be ignored when running the same script on your desktop. As a general rule, CRdata tags are only used to specify and format HTML output for your R scripts.</p>
 
 <p><strong>crdata_title</strong> - can be used in your script in order display a header in your HTML output. The syntax is: </p>
 <code>#&lt;crdata_title&gt;your_text&lt;/crdata_title&gt; </code>
@@ -59,254 +58,26 @@
 <code>#&lt;crdata_empty_line/&gt; </code>
 
 
-<p><strong>crdata_image</strong> - can be used to enclose any drawing or graph or something that outputs to a graphical device. You must enclose your plot() or any graphics code that would output an image with the crdata_image starting and end tags. The syntax is:</p>
-<code>#&lt;crdata_image&gt;</code>
-<p>... your graphics command...such as plot, byline, etc... </p>
-<code>#&lt;/crdata_image&gt;</code>
+<p><strong>crdata_image</strong> - can be used to enclose any drawing or graphical outputs. You must precede each new graphical output with the #&lt;crdata_image&gt; tag and end it with #&lt;/crdata_image&gt;. In addition, you need to put each graphics command inside a print() statement. For example, the commands "plot(x)" followed by "lines(x)" become: 
 
-  
-<h2>Illustrated examples for CRdata instrumented code</h2> 
-<p>Note any of the following scripts are runnable code provided to developers in order to illustrate how to use CRdata and provide guidance through working examples. A developer can copy the code given in each example, and try running them in CRdata enviroment. These scripts can also be run in your local R environment without any side effects as long there is a mechanism in place to input any required input data. Hopefully these examples will provide a better understanding of how to embed such tags in your own scripts for CRdata.</p>
+<code>#&lt;crdata_image&gt;<br />
+print(plot(x))<br />
+print(lines(x))<br />
+#&lt;/crdata_image&gt;</code><br />
 
-<p>Example 1:: Simple output title text in HTML, no input parameters</p><br />
-<code>#&lt;crdata_title&gt;CRdata Testing Framework&lt;/crdata_title&gt;</code>
-
-<p>Example 2:: Output HTML title as well as some arbitrary text in HTML output, no input parameters</p><br />
-<code>#&lt;crdata_title&gt;CRdata Testing Framework 01&lt;/crdata_title&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br />
-#&lt;crdata_title&gt;CRdata Testing Framework 02&lt;/crdata_title&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 02&lt;/crdata_text&gt;</code>
-
-<p>Example 3:: Output HTML title, some arbitrary text with some formatting such as empty space and horizontal line separator, no input parameters</p><br />
-<code>#&lt;crdata_title&gt;CRdata Testing Framework 01&lt;/crdata_title&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br />
-#&lt;crdata_title&gt;CRdata Testing Framework 02&lt;/crdata_title&gt;<br />
-#&lt;crdata_text&gt;An empty space of text should follow&lt;/crdata_text&gt;<br />
-#&lt;crdata_empty_line/&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 03&lt;/crdata_text&gt;<br />
-#&lt;crdata_section/&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 04&lt;/crdata_text&gt;<br />
-</code>
-
-<p>Example 4:: Output HTML title, arbitrary text with formatting, and object values such as arrays using crdata_object tag. Note that when run on your local desktop all lines prefixed by # are ignored and treated as comments by your R interpreter. In the example below values of d00 and d01 (which are arrays) are output in HTML format. This script requires no input parameters.</p><br />
-<code>
-#&lt;crdata_title&gt;CRdata Testing Framework 01&lt;/crdata_title&gt;<br />
-#&lt;crdata_text&gt;Numbers 0 thru 5&lt;/crdata_text&gt;<br />
-d00 = c(0,1,2,3,4,5)<br />
-#&lt;crdata_object&gt;d00&lt;/crdata_object&gt;<br />
-#&lt;crdata_title&gt;CRdata Testing Framework 02&lt;/crdata_title&gt;<br />
-#&lt;crdata_text&gt;An empty space should follow&lt;/crdata_text&gt;<br />
-#&lt;crdata_empty_line/&gt;<br />
-#&lt;crdata_text&gt;Numbers 6 thru 10&lt;/crdata_text&gt;<br />
-d01 = c(6,7,8,9,10)<br />
-#&lt;crdata_object&gt;d01&lt;/crdata_object&gt;<br />
-#&lt;crdata_section/&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 04&lt;/crdata_text&gt;<br />
-</code>
-
-
-<p>Example 5:: Following example illustrates under what circumstances you would see error in CRdata, consider it as negative test example. In this example, the variable zzz isn't initialized, so printing it even in your local R environment would produce errors, so would be the case in CRdata too, except you would see an output in the form of a log in HTML format.</p><br />
-<code>
-#&lt;crdata_title&gt;This is brand new CRDATA run report&lt;/crdata_title&gt;<br />
-tmp &lt;- as.data.frame(matrix(rnorm(100),ncol=10))<br />
-summary(tmp)<br />
-#&lt;crdata_object&gt;tmp&lt;/crdata_object&gt;<br />
-#&lt;crdata_section/&gt;<br />
-#&lt;crdata_image caption="First Graph"&gt;<br />
-plot(tmp)<br />
-#&lt;/crdata_image&gt;<br />
-#&lt;crdata_image caption="Second Graph"&gt;plot(tmp)<br />
-#&lt;/crdata_image&gt;<br />
-print(zzz)<br />
-#&lt;crdata_image caption="Third Graph"&gt;plot(tmp)&lt;/crdata_image&gt;<br />
-#&lt;crdata_image>plot(tmp)&lt;/crdata_image&gt;<br />
-</code>
-
-
-<p>Example 6:: Outputs some graphical plots and summary of dataframes and matrices. Note that when run on your local desktop all code prefixed by # are ignored and treated as comments by your R interpreter. The example below, when run on local desktop, would show the graphical output in a console, whereas when run in CRdata environment would generate images as files that are then placed into an HTML/web page. This is a self contained example that doesn't require any input parameters.</p><br />
-<code>
-#&lt;crdata_title&gt;This is a CRdata run report&lt;/crdata_title&gt;<br />
-tmp &lt;- as.data.frame(matrix(rnorm(100),ncol=10))<br />
-#&lt;crdata_object&gt;tmp&lt;/crdata_object&gt;<br />
-#&lt;crdata_section/&gt;<br />
-#&lt;crdata_image caption="First Graph"&gt;<br />
-plot(tmp)
-#&lt;/crdata_image&gt;<br />
-#&lt;crdata_section/&gt;<br />
-#&lt;crdata_image caption="Second Graph"&gt;plot(tmp)<br />
-#&lt;/crdata_image&gt;<br />
-#&lt;crdata_section/&gt;<br />
-#&lt;crdata_image caption="Third Graph">plot(tmp)&lt;/crdata_image&gt;<br />
-#next: same plot without a title<br />
-#&lt;crdata_image&gt;plot(tmp)&lt;/crdata_image&gt;<br />
-</code>
-
-
-<p>Example 7:: Integer input parameter example. This example assumes that the variable <strong>aNumber</strong> is specified in input form as INTEGER/NUMBER by the developer when uploading the script. It also assumes that the user of the script, inputs value for <strong>aNumber</strong> variable when running the script using CRdata. In order to run the script locally, you must somehow input the value of <strong>aNumber</strong> variable. Otherwise R interpreter will throw an error:</p><br />
-<code>
-#&lt;crdata_text&gt;Arbitrary Text 00&lt;/crdata_text&gt;<br />
-z <- rnorm(aNumber)<br />
-#&lt;crdata_object&gt;z&lt;/crdata_object&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br />
-</code>
-
-<p>Example 8:: Yet another graphical plot output example. This is self contained example that doesn't require any input parameters.<p><br />
-<code>
-#&lt;crdata_text&gt;Print of an R vector&lt;/crdata_text&gt;<br />
-x = c(0,1,2,3,4,5)<br />
-#&lt;crdata_object&gt;x&lt;/crdata_object&gt;<br />
-#&lt;crdata_text&gt;Plot of an R vector&lt;/crdata_text&gt;<br />
-#&lt;crdata_image&gt;<br />
-plot(x)<br />
-#&lt;/crdata_image&gt;<br />
-</code>
-
-<p>Example 9:: String input parameter example. This example assumes that the variable <strong>aLabel</strong> is specified as an input by the developer when uploading the script. It also assumes that the user of the script, inputs a value for <strong>aLabel</strong> variable when running the script using CRdata. In order to run the script locally, you must somehow input the value of <strong>aLabel</strong> variable otherwise R interpreter will throw an error:</p><br />
-<code>
-#&lt;crdata_text&gt;Arbitrary Text 00&lt;/crdata_text&gt;<br />
-x = c(0,1,2,3,4,5)<br />
-#&lt;crdata_object&gt;x&lt;/crdata_object&gt;<br />
-#&lt;crdata_image&gt;<br />
-plot(x, ylab=aLabel)<br />
-#&lt;/crdata_image&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br />
-</code>
-
-<p>Example 10:: Multiple string input parameters. This example assumes that the variables <strong>aLabel</strong>, <strong>anAnimal</strong> are specified in input form by the developer when uploading the script. It also assumes that the user of the script, inputs value for <strong>aLabel</strong>, <strong>anAnimal</strong> variables when running the script using CRdata. In order to run the script locally, you must somehow input the value of <strong>aLabel</strong>, <strong>anAnimal</strong> variables otherwise R interpreter will throw an error:</p><br />
-<code>
-#&lt;crdata_text&gt;Arbitrary Text 00&lt;/crdata_text&gt;<br />
-x = c(0,1,2,3,4,5)<br />
-#&lt;crdata_object&gt;x&lt;/crdata_object&gt;<br />
-z1 = c("The",anAnimal,"runs.")<br />
-#&lt;crdata_object&gt;z1&lt;/crdata_object&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 10&lt;/crdata_text&gt;<br />
-#&lt;crdata_image&gt;<br />
-plot(x, ylab=aLabel)<br />
-#&lt;/crdata_image&gt;<br />
-#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br />
-</code>
-
-<p>Example 11:: Switch input parameter. This example assume that variable <strong>inputName</strong> is specified as a <strong>LIST</strong> type with the comma separated values: "Hamid", "Michael", and "Rajiv". The user of the script will have to choose one of the possible values for <strong>inputName</strong> parameter when executing the script. In order to run the script locally, you must somehow specify the desired value of <strong>inputName</strong> parameter.</p><br />
-<code>
-x = switch(inputName,<br />
-               Hamid   = "Hello Hamid",
-               Michael = "Hello Michael",
-               Rajiv   = "Hello Rajiv"
-               )<br />
-#&lt;crdata_object&gt;x&lt;/crdata_object&gt;<br />
-</code>
-
-<p>Example 12:: Floating point input parameter. This example assumes that the variable <strong>realInput</strong> is specified as a real or floating point type by the developer when uploading the script. It also assumes that the user of the script specifies the runtime value for <strong>realInput</strong>. In order to run the script locally, you must somehow specify the desired value of <strong>realInput</strong> parameter.</p><br />
-<code>
-FloatOut <- realInput*1<br />
-#&lt;crdata_object&gt;FloatOut&lt;/crdata_object&gt;<br />
-</code>
-
-<p>Example 13:: Complex plot output example. Adapted example from <a href=''http://www.mayin.org/ajayshah/KB/R/html/g1.html'>http://www.mayin.org/ajayshah/KB/R/html/g1.html</a>. No input parameters required.</p><br />
-<code>
-# Goal: To make a series of pictures.<br />
-<br />
-# Let me take some pains on the 1st<br />
-#&lt;crdata_image&gt;<br />
-plot(density(runif(100)), lwd=2)<br />
-text(x=0, y=0.2, "100 uniforms")        # Showing you how to place text at will<br />
-abline(h=0, v=0)<br />
-<br />
-# All these statements effect the 1st plot.<br />
-x=seq(0.01,1,0.01)<br />
-par(col="blue")                         # default colour to blue.<br />
-#&lt;/crdata_image&gt;<br />
-# 2 --<br />
-#&lt;crdata_image&gt;<br />
-plot(x, sin(x), type="l")<br />
-lines(x, cos(x), type="l", col="red")<br />
-#&lt;/crdata_image&gt;<br />
-# 3 --<br />
-#&lt;crdata_image&gt;<br />
-plot(x, exp(x), type="l", col="green")<br />
-lines(x, log(x), type="l", col="orange")<br />
-#&lt;/crdata_image&gt;<br />
-# 4 --<br />
-#&lt;crdata_image&gt;<br />
-plot(x, tan(x), type="l", lwd=3, col="yellow")<br />
-#&lt;/crdata_image&gt;<br />
-# 5 --<br />
-#&lt;crdata_image&gt;<br />
-plot(x, exp(-x), lwd=2)<br />
-lines(x, exp(x), col="green", lwd=3)<br />
-#&lt;/crdata_image&gt;<br />
-# 6 --<br />
-#&lt;crdata_image&gt;<br />
-plot(x, sin(x*x), type="l")<br />
-lines(x, sin(1/x), col="pink")<br />
-#&lt;/crdata_image&gt;<br />
-</code>
-
-
-<p>Example 14:: Complex output example that reads input from a remote URL rather than a data file.  Adapted example from <a href='http://www.mayin.org/ajayshah/KB/R/html/g1.html'>http://www.mayin.org/ajayshah/KB/R/html/g1.html</a></p><br />
-<code>
-datafilename="http://personality-project.org/R/datasets/psychometrics.prob2.txt"<br />
-dataset =read.table(datafilename,header=TRUE)  #read the data file<br />
-names(dataset)     #what are the variables?<br />
-dataset=dataset[,-1]    #get rid of the ID<br />
-n = names(dataset)    #check the names again<br />
-#&lt;crdata_object&gt;n&lt;/crdata_object&gt;<br />
-r = round(cor(dataset),2)    #find the correlation matrix<br />
-#&lt;crdata_object&gt;r&lt;/crdata_object&gt;<br />
-dataset=scale(dataset)    #convert to standardized scores<br />
-#&lt;crdata_object&gt;dataset&lt;/crdata_object&gt;<br />
-dataset=data.frame(dataset)<br />
-#&lt;crdata_object&gt;dataset&lt;/crdata_object&gt;<br />
-</code>
-
-<p>Example 15:: Complex plot output example. Adapted from <a href='http://www.stat.pitt.edu/stoffer/tsa2/chap6.htm'>http://www.stat.pitt.edu/stoffer/tsa2/chap6.htm</a>. This example assumes that sol_data and recruit_data are specified as dataset parameters input types by the developer when uploading script to CRdata. It is also assumed that the user of the script point the two variables to some valid data files. Example data files to upload can be found on <a href='http://www.stat.pitt.edu/stoffer/tsa2/'>http://www.stat.pitt.edu/stoffer/tsa2/</a> </p><br />
-<code>
-lag.plot2=function(series1,series2,max.lag=0,corr=TRUE,smooth=FALSE){ <br />
-   name1=paste(deparse(substitute(series1)),"(t-",sep="")<br />
-   name2=paste(deparse(substitute(series2)),"(t)",sep="")<br />
-   data1=as.ts(series1)<br />
-   data2=as.ts(series2)<br />
-   max.lag=as.integer(max.lag)<br />
-   m1=max.lag+1<br />
-   prow=ceiling(sqrt(m1))<br />
-   pcol=ceiling(m1/prow)<br />
-   a=ccf(series1,series2,max.lag,plot=FALSE)$acf<br />
-   old.par <- par(no.readonly = TRUE)<br />
-   par(mfrow=c(prow,pcol), mar=c(2.5, 4, 2.5, 1), cex.main=1.1, font.main=1)<br />
-   for(h in 0:max.lag){<br />
-   plot(lag(series1,-h), series2, xy.labels=FALSE, main=paste(name1,h,")",sep=""), ylab=name2, xlab="") <br />
-   <br />
-   if (smooth==TRUE) <br />
-    lines(lowess(ts.intersect(lag(series1,-h),series2)[,1],<br />
-                 ts.intersect(lag(series1,-h),series2)[,2]), col="red")<br />
-   if (corr==TRUE)<br />
-    legend("topright", legend=round(a[m1-h], digits=2), text.col ="blue", bg="white", x.intersp=0)    <br />         
-   on.exit(par(old.par))<br />
-   }<br />
-}<br />
-<br />
-cat("  it all has been installed", "\n")<br />
-<br />
-soi = scan(<span style='color:red'>sol_data</span>)<br />
-rec = scan(<span style='color:red'>recruit_data</span>)<br />
-#&lt;crdata_image&gt;lag.plot2(soi,rec,8,smooth=TRUE)&lt;/crdata_image&gt;<br />
-</code>
-
-
-<br />
-<h2>CRData Pipeline functionality</h2>
-<p>CRData enables developers to write code to pipeline output from one script to another in the form of datasets. This involves 3 main steps:</p>
+<h2>Saving R script output files for pipeline processing</h2>
+<p>CRData allows scripts to save output files so that output from one script can be input to another script as a dataset. This involves 2 main steps:</p>
 <ul class="bullet_list">
 	<li>(A) A script can write intermediate results files to CRdata</li>
-	<li>(B) Another script can consume the datasets output by step (A)</li>
+	<li>(B) Another script can read the output generated by step (A) as an input dataset file</li>
 </ul>
 <p>For instance, lets say you have a script like following:</p>
 <code>
 TFs <- read.table(coTFs, sep="\t", header=TRUE)<br />
-#<crdata_object>TFs</crdata_object><br />
+#&lt;crdata_object&gt;TFs&lt;/crdata_object&gt;<br />
 write.table(TFs,file="List_Data.txt") 
 </code>
-<p>The above script when run as a job outputs the file <strong>List_Data.txt</strong>. CRData automatically uploads all the files output by your script to your private data folder. Before uploading, the files are renamed with a prefix to identify the job that output the data. For instance if the job ID was 587, then <strong>List_Data.txt</strong> is renamed as <strong>job-0000000587-List-Data.txt</strong>. </p>
+<p>The above script when run as a job outputs the file <strong>List_Data.txt</strong>. Importantly, note how the object "TFs" is declared using CRdata tags before the write.table() command. CRData automatically uploads all the files output by your script to your private data folder. Before uploading, the files are renamed with a prefix to identify the job that output the data. For instance if the job ID was 587, then <strong>List_Data.txt</strong> is renamed as <strong>job-0000000587-List-Data.txt</strong>. </p>
 <p>Note the filename is prefixed with "job-<JOB_ID>-" (to ensure uniqueness of name across jobs) and the UNDERSCORE in the name is replaced with a HYPHEN. In addition any file that is desired to be uploaded as dataset MUST NOT have following extensions as these are considered potentially as part of results displayed to user: </p>
 <ul class="bullet_list">
 	<li>jpg, png, gif, html, htm, js, css, pdf, log, r, rb, java, php, py, pyc</li>
@@ -315,18 +86,175 @@ write.table(TFs,file="List_Data.txt")
 
 
 <br />
-<h2>CRData Add new R packages </h2>
+<h2 id='add_r_packages'> Adding new R packages to CRdata </h2>
 
 <p>CRdata automatically updates its R and Bioconductor libraries regularly. The only packages not installed and updated are those that have complex dependencies on non-R libraries and cannot be auto installed (or packages that perform interactive graphics and other functions not compatible with our web-service). So you should find all packages compatible with CRdata already pre-installed and up-to-date. In rare cases, the author of a new package not yet publicly available may wish to use the package with CRdata.</p>
 
-<p>CRData enables users to upload new R packages. You have to create an R Script and - <em>at the time of submitting the script to CRdata</em> - tag it with the reserved tag, <strong>'INSTALL SCRIPT'</strong>. Once you submit a job with that script you'll notice that the job status is set to PENDING. The site admin will receive an email notification about this job. The site admin will test the job and will either approve and disapprove it. If approved, then the Job becomes DONE (with a successful flag), if not it's FAILED. In either case, the script owner will receive an email notification about it. See below for an illustration of a sample installation script that assumes CRData doesn't have RQuantLib library pre-installed, and attempts to install the library, and test it.</p>
+<p>CRData enables users to upload new R packages. You have to create an R Script and - <em>at the time of submitting the script to CRdata</em> - tag it with the reserved tag, <strong>'INSTALL SCRIPT'</strong>. Once you submit a job with that script you'll notice that the job status is set to PENDING. The site admin will receive an email notification about this job. The site admin will test the job and will either approve and disapprove it. If approved, then the Job becomes DONE (with a successful flag), if not it's FAILED. In either case, the script owner will receive an email notification about it. See below for an illustration of a sample installation script that assumes CRData doesn't have the R package "packageName" pre-installed, and attempts to install the library, and test it.</p>
 
 <code>
 # Not Run <br />
 install.packages(packageName)    # packageName is the name of the package being installed <br />
-# Now call the package and test that it installed correctly <br />
-library(packageName) <br />
-aPackageCommand()                # issue a sample command from the package to check that it executes correctly  
+library(packageName) <br />      # call the package and test that it installed correctly <br />
+aPackageCommand()                # sample command from the package to check it executes correctly  <br />
+</code>
+
+  
+<h2>Illustrated examples for CRdata instrumented code</h2> 
+<p>Note any of the following scripts are runnable code provided to developers in order to illustrate how to use CRdata and provide guidance through working examples. A developer can copy the code given in each example, and try running them in CRdata enviroment. These scripts can also be run in your local R environment without any side effects as long there is a mechanism in place to input any required input data. Hopefully these examples will provide a better understanding of how to embed such tags in your own scripts for CRdata.</p>
+
+
+<p>Example: Output title and some arbitrary text in HTML output, no input parameters </p>
+<code>#&lt;crdata_title&gt;CRdata Output Title 1&lt;/crdata_title&gt;<br />
+#&lt;crdata_text&gt;Arbitrary Text 1&lt;/crdata_text&gt;<br />
+#&lt;crdata_title&gt;CRdata Output Title 2&lt;/crdata_title&gt;<br />
+#&lt;crdata_text&gt;Arbitrary Text 2&lt;/crdata_text&gt;</code>
+
+<p>Example: Output HTML title, some arbitrary text with some formatting such as empty space and horizontal line separator, no input parameters </p>
+<code>#&lt;crdata_title&gt;Title 01&lt;/crdata_title&gt;<br /> 
+#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br /> 
+#&lt;crdata_title&gt;Title 02&lt;/crdata_title&gt;<br /> 
+#&lt;crdata_text&gt;An empty line should follow&lt;/crdata_text&gt;<br /> 
+#&lt;crdata_empty_line/&gt;<br />
+#&lt;crdata_text&gt;Arbitrary Text 03&lt;/crdata_text&gt;<br /> 
+#&lt;crdata_section/&gt;<br />
+#&lt;crdata_text&gt;Arbitrary Text 04&lt;/crdata_text&gt;<br /> 
+</code>
+
+
+<p>Example: Output HTML title, arbitrary text with formatting, and object values such as arrays using crdata_object tag. Note that when run on your local desktop all lines prefixed by # are ignored and treated as comments by your R interpreter. In the example below values of d00 and d01 (which are arrays) are output in HTML format. This script requires no input parameters. </p><br />
+<code> 
+#&lt;crdata_title&gt;CRdata Output Example 1&lt;/crdata_title&gt;<br /> 
+#&lt;crdata_text&gt;Numbers 0 thru 5&lt;/crdata_text&gt;<br /> 
+d00 = c(0,1,2,3,4,5) <br /> 
+#&lt;crdata_object&gt;d00&lt;/crdata_object&gt;<br /> 
+#&lt;crdata_title&gt;CRdata Output example 2&lt;/crdata_title&gt;<br /> 
+#&lt;crdata_text&gt;An empty line should follow&lt;/crdata_text&gt;<br /> 
+#&lt;crdata_empty_line/&gt;<br />
+#&lt;crdata_text&gt;Numbers 6 thru 10&lt;/crdata_text&gt;<br /> 
+d01 = c(6,7,8,9,10) <br />
+#&lt;crdata_object&gt;d01&lt;/crdata_object&gt;<br /> 
+#&lt;crdata_section/&gt;<br />
+#&lt;crdata_text&gt;Arbitrary Text 04&lt;/crdata_text&gt;<br /> 
+</code>
+
+
+<p>Example: Outputs some graphical plots and summary of dataframes and matrices. Note that when run on your local desktop all code prefixed by # are ignored and treated as comments by your R interpreter. The example below, when run on local desktop, would show the graphical output in a console, whereas when run in CRdata environment would generate images as files that are then placed into an HTML/web page. This is a self contained example that doesn't require any input parameters. </p><br />
+<code> 
+#&lt;crdata_title&gt;This is a CRdata run report&lt;/crdata_title&gt;<br /> 
+tmp <- as.data.frame(matrix(rnorm(100),ncol=10)) <br />
+#&lt;crdata_object&gt;tmp&lt;/crdata_object&gt;<br /> 
+#&lt;crdata_section/&gt;<br />
+#&lt;crdata_image caption="First Graph"&gt; <br />
+print(plot(tmp))<br />
+#&lt;/crdata_imaget&gt; <br />
+#&lt;crdata_section/&gt;<br />
+#&lt;crdata_image caption="Second Graph"&gt;print(plot(tmp)) <br />
+#&lt;/crdata_imaget&gt;<br />
+#&lt;crdata_section/&gt;<br />
+#&lt;crdata_image caption="Third Graph">print(plot(tmp))&lt;/crdata_imaget&gt; <br />
+#next: same plot without a title <br />
+#&lt;crdata_image&gt;print(plot(tmp))&lt;/crdata_imaget&gt;<br />
+</code>
+
+
+<p>Example: Another graphical plot output example. This is a self contained example that doesn't require any input parameters.<p><br />
+<code> 
+#&lt;crdata_text&gt;Print of an R vector&lt;/crdata_text&gt;<br /> 
+x = c(1,4,9,15,27) <br />
+#&lt;crdata_object&gt;x&lt;/crdata_object&gt;<br /> 
+#&lt;crdata_text&gt;Plot of an R vector&lt;/crdata_text&gt;<br /> 
+#&lt;crdata_image&gt <br />
+print(plot(x)) <br />
+print(lines(x))<br />
+#&lt;/crdata_image&gt<br />
+</code>
+
+<p>Example: Integer input parameter example. This example assumes that the variable <strong>aNumber</strong> is specified in input form as INTEGER/NUMBER by the developer when uploading the script. It also assumes that the user of the script, inputs value for <strong>aNumber</strong> variable when running the script using CRdata. In order to run the script locally, you must somehow input the value of <strong>aNumber</strong> variable. Otherwise R interpreter will throw an error: </p>
+<code> 
+#&lt;crdata_text&gt;Arbitrary Text 00&lt;/crdata_text&gt;<br /> 
+z <- rnorm(aNumber) <br />
+#&lt;crdata_object&gt;z&lt;/crdata_object&gt;<br /> 
+#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br /> 
+</code>
+
+
+<p>Example: String input parameter example. This example assumes that the variable <strong>aLabel</strong> is specified as an input by the developer when uploading the script. It also assumes that the user of the script, inputs a value for <strong>aLabel</strong> variable when running the script using CRdata. In order to run the script locally, you must somehow input the value of <strong>aLabel</strong> variable otherwise R interpreter will throw an error: </p><br />
+<code> 
+#&lt;crdata_text&gt;Arbitrary Text 00&lt;/crdata_text&gt;<br /> 
+x = c(0,1,2,3,4,5) <br />
+#&lt;crdata_object&gt;x&lt;/crdata_object&gt;<br /> 
+#&lt;crdata_image&gt;<br />
+plot(x, ylab=aLabel) <br />
+#&lt;/crdata_image&gt;<br />
+#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br /> 
+</code>
+
+
+<p>Example: Multiple string input parameters. This example assumes that the variables <strong>aLabel</strong>, <strong>anAnimal</strong> are specified in input form by the developer when uploading the script. It also assumes that the user of the script, inputs value for <strong>aLabel</strong>, <strong>anAnimal</strong> variables when running the script using CRdata. In order to run the script locally, you must somehow input the value of <strong>aLabel</strong>, <strong>anAnimal</strong> variables otherwise R interpreter will throw an error: </p><br />
+<code> 
+#&lt;crdata_text&gt;Arbitrary Text 00&lt;/crdata_text&gt;<br /> 
+x = c(0,1,2,3,4,5) <br />
+#&lt;crdata_object&gt;x&lt;/crdata_object&gt;<br /> 
+z1 = c("The",anAnimal,"runs.") <br />
+#&lt;crdata_object&gt;z1&lt;/crdata_object&gt;<br /> 
+#&lt;crdata_text&gt;Arbitrary Text 10&lt;/crdata_text&gt;<br /> 
+#&lt;crdata_image&gt;<br />
+plot(x, ylab=aLabel) <br />
+#&lt;/crdata_image&gt;<br />
+#&lt;crdata_text&gt;Arbitrary Text 01&lt;/crdata_text&gt;<br /> 
+</code>
+
+
+<p>Example: Switch input parameter. This example assumes that variable <strong>inputName</strong> is specified as a <strong>LIST</strong> type with the comma separated values: "Hamid", "Michael", and "Rajiv". The user of the script will have to choose one of the possible values for <strong>inputName</strong> parameter when executing the script. In order to run the script locally, you must somehow specify the desired value of <strong>inputName</strong> parameter. </p><br />
+<code> 
+x = switch(inputName, 
+               Hamid   = "Hello Hamid",
+               Michael = "Hello Michael",
+               Rajiv   = "Hello Rajiv"
+               ) <br />
+#&lt;crdata_object&gt;x&lt;/crdata_object&gt;<br /> 
+</code>
+
+<p>Example: Floating point input parameter. This example assumes that the variable <strong>realInput</strong> is specified as a real or floating point type by the developer when uploading the script. It also assumes that the user of the script specifies the runtime value for <strong>realInput</strong>. In order to run the script locally, you must somehow specify the desired value of <strong>realInput</strong> parameter. </p><br />
+<code> 
+FloatOut <- realInput*1 <br />
+#&lt;crdata_object&gt;FloatOut&lt;/crdata_object&gt;<br /> 
+</code> 
+
+
+
+<p>Example: Reading input from a remote URL rather than a data file.  Adapted example from <a href='http://www.mayin.org/ajayshah/KB/R/html/g1.html'>http://www.mayin.org/ajayshah/KB/R/html/g1.html</a> </p><br />
+<code> 
+datafilename="http://personality-project.org/R/datasets/psychometrics.prob2.txt" <br />
+dataset =read.table(datafilename,header=TRUE)  #read the data file <br />
+names(dataset)     #what are the variables? <br />
+dataset=dataset[,-1]    #get rid of the ID <br />
+n = names(dataset)    #check the names again <br />
+#&lt;crdata_object&gt;n&lt;/crdata_object&gt;<br /> 
+r = round(cor(dataset),2)    #find the correlation matrix <br />
+#&lt;crdata_object&gt;r&lt;/crdata_object&gt;<br /> 
+dataset=scale(dataset)    #convert to standardized scores <br />
+#&lt;crdata_object&gt;dataset&lt;/crdata_object&gt;<br /> 
+dataset=data.frame(dataset) <br />
+#&lt;crdata_object&gt;dataset&lt;/crdata_object&gt;<br /> 
+</code> 
+
+<p>Example: Error handling in CRdata. In this example, the variable zzz isn't initialized, so printing it even in your local R environment would produce errors. Likewise in CRdata, except the error message is output to the HTML log file. </p><br />
+<code> 
+#&lt;crdata_title&gt;This is brand new CRDATA run report&lt;/crdata_title&gt;<br /> 
+tmp <- as.data.frame(matrix(rnorm(100),ncol=10)) <br />
+summary(tmp) <br />
+#&lt;crdata_object&gt;tmp&lt;/crdata_object&gt;<br /> 
+#&lt;crdata_section/&gt;<br />
+#&lt;crdata_image caption="First Graph"> <br />
+plot(tmp) <br />
+#&lt;/crdata_image&gt; <br />
+#&lt;crdata_image caption="Second Graph">plot(tmp) <br />
+#&lt;/crdata_image&gt;<br />
+print(zzz) <br />
+#&lt;crdata_image caption="Third Graph">plot(tmp)&lt;/crdata_image&gt; <br />
+#&lt;crdata_image&gt;plot(tmp)&lt;/crdata_image&gt;<br />
 </code>
 
 <% end -%>

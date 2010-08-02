@@ -131,15 +131,38 @@ return 'fu_' + this.index + '_file_' + file.index
 }
 })
 
+//FlashUploader.init = function() {
+//	$$('.swfUploadArea').each(function(element, index) {
+//		if (!element.flashUploader) {
+//			element.flashUploader = new FlashUploader(element, index)
+//			
+//			buttonWrap = element.down(".embedButton")
+//			object = element.down('object')
+//			
+//			buttonWrap.relativize()
+//			object.absolutize()
+//			
+//			object.setStyle({
+//				left: 0,
+//				top: 0,
+//				width: buttonWrap.down('input').getWidth() + 'px',/
+//				height: buttonWrap.down('input').getHeight() + 'px'
+//			})
+//		}
+//	})
+//}
+
 FlashUploader.init = function() {
-$$('.swfUploadArea').each(function(element, index) {
+    element = $('swfUploadArea')
+    index = 0
+
 if (!element.flashUploader) {
 element.flashUploader = new FlashUploader(element, index)
 
 buttonWrap = element.down(".embedButton")
 object = element.down('object')
 
-buttonWrap.relativize()
+      //buttonWrap.relativize()
 object.absolutize()
 
 object.setStyle({
@@ -149,10 +172,8 @@ width: buttonWrap.down('input').getWidth() + 'px',
 height: buttonWrap.down('input').getHeight() + 'px'
 })
 }
-})
 }
 
 Event.observe(window, 'load', function(){
 FlashUploader.init()
 })
-

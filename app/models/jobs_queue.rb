@@ -88,6 +88,8 @@ class JobsQueue < ActiveRecord::Base
         rescue => ex
           # Just name sure we go on
           logger.info "Exception getting next job from queue: #{ex}"
+          get_next_job = false
+          reload
         end
       end
     end
@@ -160,10 +162,13 @@ class JobsQueue < ActiveRecord::Base
   def self.scale_processing_nodes
     autoscalable.each do |jobs_queue|
       if (jobs_queue.jobs.size > jobs_queue.nr_jobs) and (jobs_queue.processing_nodes.size < jobs_queue.max_processing_nodes) and (Time.now - jobs_queue.jobs.minimum('submitted_at') > jobs_queue.max_waiting_time*60)
+        nr_new_processing_nodes = (jobs_queue.processing_nodes.size < jobs_queue.min_processing_nodes) ? jobs_queue.min_processing_nodes - jobs_queue.processing_nodes.size : 1
+        nr_new_processing_nodes.times do
         processing_node = jobs_queue.processing_nodes.build(:aws_key_id => jobs_queue.aws_key_id)
         processing_node.save_node(jobs_queue.owner, {:node_type => 'automatic', :ec2_instance_ami => WORKER_IMG, :ec2_instance_type => 'm1.small', :processing_node => {:aws_key_id => jobs_queue.aws_key_id}})
       end
     end
+  end
   end
  
   private

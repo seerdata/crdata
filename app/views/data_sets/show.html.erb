@@ -50,6 +50,6 @@
 
   <hr size="0" /> 
   <%= content_tag(:span, link_to('Edit dataset', edit_data_set_path(@data_set)), :class => 'spark-adv-submit') if current_user and (current_user.groups.default.first.data_sets.include?(@data_set) or (current_user.is_site_admin? and @data_set.is_public)) %>
-  <%= content_tag(:span, link_to('Signed URL', signed_url_data_set_path(@data_set)), :class => 'spark-adv-submit') unless @data_set.url %>
+  <%= content_tag(:span, link_to('Download Data', signed_url_data_set_path(@data_set)), :class => 'spark-adv-submit') unless @data_set.url %>
   <%= content_tag(:span, link_to('Back', (current_user and current_user.is_site_admin? and current_user != @data_set.owner) ? by_user_data_sets_path(:user_id => @data_set.owner.id) : data_sets_path), :class => 'form-cancel') %>
 <% end %>

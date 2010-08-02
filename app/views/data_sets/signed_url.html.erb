@@ -30,9 +30,11 @@
 	</fieldset>
     <span class="form-cancel">or <%= link_to('Cancel', @data_set) %></span>
   <% end %>
+  
+  <%= clear %>
   <br />
   <% content_tag(:div) do %>
-    <h2>Signed URL</h2>
+    <h2>Download Data</h2>
     <%= content_tag(:p, link_to(@signed_url, @signed_url, :target => :blank)) %>
   <% end if @signed_url %>
   <%= javascript_include_tag('data/show') %>

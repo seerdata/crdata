@@ -1,7 +1,11 @@
 module SwfUploadHelper
+
+  
   def swf_upload_area(title, options)
+     
     session_key = RAILS_GEM_VERSION < "2.3.0" ? ActionController::Base.session[0][:session_key] : ActionController::Base.session_options[:key]
-    %Q{<div class="swfUploadArea">
+    if RAILS_ENV != "test" && RAILS_ENV != "cucumber"
+      %Q{<div id="swfUploadArea" class="swfUploadArea">
         <div style="display:none">
           <div class="buttonText">#{title}</div>
           <div class="url">#{options[:url]}</div>
@@ -24,5 +28,20 @@ module SwfUploadHelper
         <ul class="uploadContainer">
         </ul>
     </div>}
+    else
+      
+      %Q{<div>
+ 
+          <input type="text" id="filename" name="Filename"> <br />
+          <input type="text" id="filedata" name="Filedata"> <br />
+         
+          <input type='hidden' id='groups' name='groups' value="#{current_user.groups.default.first.id}">
+        </div>
+        <div>
+           <input type="submit" value="Create">
+        </div>
+      
+      }
+    end
   end
 end

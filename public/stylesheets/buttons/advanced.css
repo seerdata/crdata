@@ -9,7 +9,7 @@
 .swfUploadArea{ float:left; position:relative;}
 .embedButton{ width:100px; margin-top:-2px;}
 .embedArea input{ display:none;}
-.embedButton object{ margin-top:7px;}
+.embedButton object{ margin:5px 0 0 20px;}
 
 ul.uploadContainer{ width:370px; padding:10px; position:absolute; top:-160px; right:-600px;}
 ul.uploadContainer li{ height:22px; font-size:13px; margin-bottom:10px; position:relative;}

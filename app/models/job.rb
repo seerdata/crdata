@@ -244,6 +244,7 @@ EOS
   # Get search conditions for jobs
   def self.get_conditions(user, statuses)
     conditions = "user_id #{(user) ? ' = ' + user.id.to_s : ' IS NULL'}"
+    conditions += " OR user_id IS NULL" if user and user.is_super_admin?
     conditions += " OR status = 'pending'" if user and user.is_site_admin?
     #conditions = "(#{conditions} OR user_id IS NULL)" if user and user.is_site_admin?
     if statuses

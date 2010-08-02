@@ -140,15 +140,15 @@ class ProcessingNode < ActiveRecord::Base
   # Get the sort criteria for processing nodes
   def self.get_sort_criteria(sort)
     case sort
-    when 'id'                      then 'id'
-    when 'node_identifier'         then 'node_identifier'
-    when 'ip_address'              then 'ip_address'
-    when 'status'                  then 'active'
+    when 'id'                      then 'processing_nodes.id'
+    when 'node_identifier'         then 'processing_nodes.node_identifier'
+    when 'ip_address'              then 'processing_nodes.ip_address'
+    when 'status'                  then 'processing_nodes.status'
     when 'queue'                   then 'jobs_queues.name'
-    when 'id_reverse'              then 'id DESC'
-    when 'node_identifier_reverse' then 'node_identifier DESC'
-    when 'ip_address_reverse'      then 'ip_address DESC'
-    when 'status_reverse'          then 'active DESC'
+    when 'id_reverse'              then 'processing_nodes.id DESC'
+    when 'node_identifier_reverse' then 'processing_nodes.node_identifier DESC'
+    when 'ip_address_reverse'      then 'processing_nodes.ip_address DESC'
+    when 'status_reverse'          then 'processing_nodes.status DESC'
     when 'queue_reverse'           then 'jobs_queues.name DESC'
     else 'id'
     end
@@ -162,6 +162,5 @@ class ProcessingNode < ActiveRecord::Base
       parameters[:aws_credentials]
     end
   end
-
 
 end
