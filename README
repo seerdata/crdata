@@ -2,7 +2,7 @@
                                       === WELCOME TO THE CRDATA CODE REPOSITORY ===
                                       =============================================
 
-This repo contains the code for CRdata Server Nodes. In addition to the code in this repo, you will also need the code for CRdata R Processing Nodes, available from:
+This repository contains the code for CRdata Server Nodes. In addition to the code in this repo, you will also need the code for CRdata R Processing Nodes, available from:
 
 http://github.com/rdulepet/CRData-Processing-Node
 
