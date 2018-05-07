@@ -1,5 +1,5 @@
 
-# WELCOME TO THE CRDATA CODE REPOSITORY
+# Welcome to the CRDATA Code Repository
 
 
 This repository contains the code for CRdata Server Nodes. In addition to the code in this repo, you will also need the code for CRdata R Processing Nodes, available from:
